@@ -1,0 +1,43 @@
+# Configuration values to generate kubernetes/photon os 5 template VM
+# Adjust these as necessary to suit your environment, if they are unset here and a default exists in variables.pkr.hcl that value will be used instead
+# You can use environment variables prefixed with 'PKR_VAR_' instead of coding in this file directly if needed for security (e.g. PKR_VAR_vcenter_password)
+
+# Destination vCenter details
+vcenter_server 								= "<vcenter server/FQDN>"     # vCenter host name / IP to use for build
+vcenter_insecure_connection 	= true                        # Allow unverified SSL certificates on vCenter
+vcenter_user 									= "svc-packer@vsphere.local"  # Connect to vCenter as this user
+vcenter_password							= "VMware123!"                # with this password (or use PKR_VAR_vcenter_password env. variable)
+vcenter_datacenter 						= "dc01"                      # Datacenter to use for build
+vcenter_cluster 							= "cl01"                      # Cluster to use for build
+vcenter_datastore 						= "vsan Datastore"            # Datastore to use for build
+vcenter_network 							= "VMNetwork"                 # Network to use for build
+vm_folder 										= "Kubernetes"                # Folder for build VM
+
+# Source details
+iso_datastore									= "iso"                       # Datastore where the iso image is located
+iso_path                      = "linux/photon"              # Path on datastore for iso image
+iso_filename                  = "photon-minimal-5.0-dde71ec57.x86_64.iso"   # ISO filename to use for build
+
+# Template VM details
+root_password 								= "changeme"                  # Password to be assigned to 'root' user in template VM
+vm_name 											= "k8s-photon5"               # Name for the template VM
+num_cpus 											= 2                           # Number of vCPUs to allocate to the template VM
+num_cpu_cores 								= 1                           # Number of CPU cores per vCPU for the template VM
+num_vram_mb										= 8192                        # vRAM size in MB for the template VM
+disk_size_mb 									= 16384                       # Disk size in MB for the template VM
+disk_thin_provisioned 				= true                        # Should the template VM disk be thin-provisioned
+firmware 											= "efi-secure"                # Firmware mode for the template VM
+vm_hw_version 								= 19                          # VM Hardware version for the template VM
+
+# Overrides for the downloads to be installed in the template:
+dl_containerd                 = "https://github.com/containerd/containerd/releases/download/v1.7.19/containerd-1.7.19-linux-amd64.tar.gz"
+dl_containerd_service         = "https://raw.githubusercontent.com/containerd/containerd/main/containerd.service"
+dl_runc                       = "https://github.com/opencontainers/runc/releases/download/v1.1.13/runc.amd64"
+dl_cni_plugins                = "https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-amd64-v1.5.1.tgz"
+dl_nerdctl                    = "https://github.com/containerd/nerdctl/releases/download/v1.7.6/nerdctl-1.7.6-linux-amd64.tar.gz"
+dl_kubectl                    = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl"
+dl_kubectl-convert            = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl-convert"
+dl_crictl                     = "https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.30.1/crictl-v1.30.1-linux-amd64.tar.gz"
+dl_kubeadm-kubelet            = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/{kubeadm,kubelet}"
+dl_kubelet-service            = "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubelet/kubelet.service"
+dl_kubeadm-config             = "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf"
