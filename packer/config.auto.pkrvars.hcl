@@ -3,31 +3,31 @@
 # You can use environment variables prefixed with 'PKR_VAR_' instead of coding in this file directly if needed for security (e.g. PKR_VAR_vcenter_password)
 
 # Destination vCenter details
-vcenter_server 								= "<vcenter server/FQDN>"     # vCenter host name / IP to use for build
-vcenter_insecure_connection 	= true                        # Allow unverified SSL certificates on vCenter
-vcenter_user 									= "<vcenter username>"        # Connect to vCenter as this user
-vcenter_password							= "<vcenter password>"        # with this password (or use PKR_VAR_vcenter_password env. variable)
-vcenter_datacenter 						= "<vcenter datacenter>"      # Datacenter to use for build
-vcenter_cluster 							= "<vcenter cluster>"         # Cluster to use for build
-vcenter_datastore 						= "<vcenter datastore>"       # Datastore to use for build
-vcenter_network 							= "<vcenter network>"         # Network to use for build
-vm_folder 										= "<VM folder>"               # Folder for build VM
+vcenter_server                = "<vcenter server/FQDN>"     # vCenter host name / IP to use for build
+vcenter_insecure_connection   = true                        # Allow unverified SSL certificates on vCenter
+vcenter_user                  = "<vcenter username>"        # Connect to vCenter as this user
+vcenter_password              = "<vcenter password>"        # with this password (or use PKR_VAR_vcenter_password env. variable)
+vcenter_datacenter            = "<vcenter datacenter>"      # Datacenter to use for build
+vcenter_cluster               = "<vcenter cluster>"         # Cluster to use for build
+vcenter_datastore             = "<vcenter datastore>"       # Datastore to use for build
+vcenter_network               = "<vcenter network>"         # Network to use for build
+vm_folder                     = "<VM folder>"               # Folder for build VM
 
 # Source details
-iso_datastore									= "iso"                       # Datastore where the iso image is located
+iso_datastore                 = "iso"                       # Datastore where the iso image is located
 iso_path                      = "linux/photon"              # Path on datastore for iso image
 iso_filename                  = "photon-minimal-5.0-dde71ec57.x86_64.iso"   # ISO filename to use for build
 
 # Template VM details
-root_password 								= "<template root password>"  # Password to be assigned to 'root' user in template VM
-vm_name 											= "k8s-photon5"               # Name for the template VM
-num_cpus 											= 2                           # Number of vCPUs to allocate to the template VM
-num_cpu_cores 								= 1                           # Number of CPU cores per vCPU for the template VM
-num_vram_mb										= 8192                        # vRAM size in MB for the template VM
-disk_size_mb 									= 16384                       # Disk size in MB for the template VM
-disk_thin_provisioned 				= true                        # Should the template VM disk be thin-provisioned
-firmware 											= "efi-secure"                # Firmware mode for the template VM
-vm_hw_version 								= 19                          # VM Hardware version for the template VM
+root_password                 = "<template root password>"  # Password to be assigned to 'root' user in template VM
+vm_name                       = "k8s-photon5"               # Name for the template VM
+num_cpus                      = 2                           # Number of vCPUs to allocate to the template VM
+num_cpu_cores                 = 1                           # Number of CPU cores per vCPU for the template VM
+num_vram_mb                   = 8192                        # vRAM size in MB for the template VM
+disk_size_mb                  = 16384                       # Disk size in MB for the template VM
+disk_thin_provisioned         = true                        # Should the template VM disk be thin-provisioned
+firmware                      = "efi-secure"                # Firmware mode for the template VM
+vm_hw_version                 = 19                          # VM Hardware version for the template VM
 
 # Overrides for the downloads to be installed in the template:
 dl_containerd                 = "https://github.com/containerd/containerd/releases/download/v1.7.19/containerd-1.7.19-linux-amd64.tar.gz"

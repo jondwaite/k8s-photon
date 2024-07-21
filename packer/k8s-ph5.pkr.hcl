@@ -101,5 +101,4 @@ build {
       "./data/scripts/k8s-setup.sh"
     ]
   }
-
 }
