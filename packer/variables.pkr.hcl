@@ -164,6 +164,12 @@ variable "dl_nerdctl" {
 	description = "Download link for nerdctl binary"
 }
 
+variable "dl_calicoctl" {
+	type = string
+	default = "https://github.com/projectcalico/calico/releases/download/v3.28.0/calicoctl-linux-amd64"
+	description = "Download link for calicoctl"
+}
+
 variable "dl_kubectl" {
 	type = string
 	default = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl"
@@ -198,4 +204,10 @@ variable "dl_kubeadm-config" {
 	type = string
 	default = "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf"
 	description = "Download link for kubeadm conf file"
+}
+
+variable "ssh_key" {
+	type = string
+	default = ""
+	description = "SSH key to allow external access (added to authorized_keys in template)"
 }

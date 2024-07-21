@@ -5,13 +5,13 @@
 # Destination vCenter details
 vcenter_server 								= "<vcenter server/FQDN>"     # vCenter host name / IP to use for build
 vcenter_insecure_connection 	= true                        # Allow unverified SSL certificates on vCenter
-vcenter_user 									= "svc-packer@vsphere.local"  # Connect to vCenter as this user
-vcenter_password							= "VMware123!"                # with this password (or use PKR_VAR_vcenter_password env. variable)
-vcenter_datacenter 						= "dc01"                      # Datacenter to use for build
-vcenter_cluster 							= "cl01"                      # Cluster to use for build
-vcenter_datastore 						= "vsan Datastore"            # Datastore to use for build
-vcenter_network 							= "VMNetwork"                 # Network to use for build
-vm_folder 										= "Kubernetes"                # Folder for build VM
+vcenter_user 									= "<vcenter username>"        # Connect to vCenter as this user
+vcenter_password							= "<vcenter password>"        # with this password (or use PKR_VAR_vcenter_password env. variable)
+vcenter_datacenter 						= "<vcenter datacenter>"      # Datacenter to use for build
+vcenter_cluster 							= "<vcenter cluster>"         # Cluster to use for build
+vcenter_datastore 						= "<vcenter datastore>"       # Datastore to use for build
+vcenter_network 							= "<vcenter network>"         # Network to use for build
+vm_folder 										= "<VM folder>"               # Folder for build VM
 
 # Source details
 iso_datastore									= "iso"                       # Datastore where the iso image is located
@@ -19,7 +19,7 @@ iso_path                      = "linux/photon"              # Path on datastore 
 iso_filename                  = "photon-minimal-5.0-dde71ec57.x86_64.iso"   # ISO filename to use for build
 
 # Template VM details
-root_password 								= "changeme"                  # Password to be assigned to 'root' user in template VM
+root_password 								= "<template root password>"  # Password to be assigned to 'root' user in template VM
 vm_name 											= "k8s-photon5"               # Name for the template VM
 num_cpus 											= 2                           # Number of vCPUs to allocate to the template VM
 num_cpu_cores 								= 1                           # Number of CPU cores per vCPU for the template VM
@@ -35,6 +35,7 @@ dl_containerd_service         = "https://raw.githubusercontent.com/containerd/co
 dl_runc                       = "https://github.com/opencontainers/runc/releases/download/v1.1.13/runc.amd64"
 dl_cni_plugins                = "https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-amd64-v1.5.1.tgz"
 dl_nerdctl                    = "https://github.com/containerd/nerdctl/releases/download/v1.7.6/nerdctl-1.7.6-linux-amd64.tar.gz"
+dl_calicoctl                  = "https://github.com/projectcalico/calico/releases/download/v3.28.0/calicoctl-linux-amd64"
 dl_kubectl                    = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl"
 dl_kubectl-convert            = "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl-convert"
 dl_crictl                     = "https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.30.1/crictl-v1.30.1-linux-amd64.tar.gz"

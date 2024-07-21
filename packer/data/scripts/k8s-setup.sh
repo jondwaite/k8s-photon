@@ -12,8 +12,11 @@ tdnf install -y -q wget tar jq socat ethtool conntrack git nfs-utils 2>&1
 
 # Set up firewall rules
 echo "Configuring firewall rules"
-iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 179 -j ACCEPT
 iptables -A INPUT -p tcp --dport 2379:2380 -j ACCEPT
+iptables -A INPUT -p udp --dport 4789 -j ACCEPT
+iptables -A INPUT -p tcp --dport 5473 -j ACCEPT
+iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
 iptables -A INPUT -p udp --dport 8285 -j ACCEPT
 iptables -A INPUT -p udp --dport 8472 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10250 -j ACCEPT
@@ -21,6 +24,7 @@ iptables -A INPUT -p tcp --dport 10256 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10257 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10259 -j ACCEPT
 iptables -A INPUT -p tcp --dport 30000:32767 -j ACCEPT
+iptables -A INPUT -p ip -j ACCEPT
 iptables -A INPUT -p icmp -j ACCEPT
 iptables-save > /etc/systemd/scripts/ip4save
 
@@ -76,6 +80,11 @@ systemctl enable --now containerd 2>&1
 echo "Downloading nerdctl from $DL_NERDCTL"
 wget -nv "$DL_NERDCTL" 2>&1
 tar Cxzvf /usr/local/bin nerdctl*.tar.gz
+
+# Install calicoctl
+echo "Downloading calicoctl from $DL_CALICOCTL"
+wget -nv "$DL_CALICOCTL" 2>&1
+install -o root -g root -m 0755 calicoctl-linux-amd64 /usr/local/bin/kubectl-calico
 
 # Install kubernetes tools & pre-pull images:
 echo "Downloading kubectl from $DL_KUBECTL"

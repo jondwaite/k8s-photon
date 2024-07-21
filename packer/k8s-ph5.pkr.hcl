@@ -15,20 +15,6 @@ locals {
       { root_password = var.root_password }
     )
   }
-  # setup_content = templatefile("${abspath(path.root)}/data/scripts/k8s-setup.pkrtpl.hcl",
-  # { 
-  #   dl_containerd         = var.dl_containerd
-  #   dl_containerd_service = var.dl_containerd_service
-  #   dl_runc               = var.dl_runc
-  #   dl_cni_plugins        = var.dl_cni_plugins
-  #   dl_nerdctl            = var.dl_nerdctl
-  #   dl_kubectl            = var.dl_kubectl
-  #   dl_kubectl-convert    = var.dl_kubectl-convert
-  #   dl_crictl             = var.dl_crictl
-  #   dl_kubeadm-kubelet    = var.dl_kubeadm-kubelet
-  #   dl_kubelet-service    = var.dl_kubelet-service
-  #   dl_kubeadm-config     = var.dl_kubeadm-config
-  # })
 }
 
 source "vsphere-iso" "k8s-ph5" {
@@ -101,12 +87,14 @@ build {
       "DL_RUNC=${var.dl_runc}",
       "DL_CNI_PLUGINS=${var.dl_cni_plugins}",
       "DL_NERDCTL=${var.dl_nerdctl}",
+      "DL_CALICOCTL=${var.dl_calicoctl}",
       "DL_KUBECTL=${var.dl_kubectl}",
       "DL_KUBECTL_CONVERT=${var.dl_kubectl-convert}",
       "DL_CRICTL=${var.dl_crictl}",
       "DL_KUBEADM_KUBELET=${var.dl_kubeadm-kubelet}",
       "DL_KUBELET_SERVICE=${var.dl_kubelet-service}",
       "DL_KUBEADM_CONFIG=${var.dl_kubeadm-config}"
+      "SSH_KEY=${var.ssh_key}"
     ]
     env_var_format = "export %s='%s'\n"
     scripts = [

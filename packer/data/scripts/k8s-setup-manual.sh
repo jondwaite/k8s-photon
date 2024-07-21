@@ -12,8 +12,11 @@ tdnf install -y -q wget tar jq socat ethtool conntrack git nfs-utils 2>&1
 
 # Set up firewall rules
 echo "Configuring firewall rules"
-iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 179 -j ACCEPT
 iptables -A INPUT -p tcp --dport 2379:2380 -j ACCEPT
+iptables -A INPUT -p udp --dport 4789 -j ACCEPT
+iptables -A INPUT -p tcp --dport 5473 -j ACCEPT
+iptables -A INPUT -p tcp --dport 6443 -j ACCEPT
 iptables -A INPUT -p udp --dport 8285 -j ACCEPT
 iptables -A INPUT -p udp --dport 8472 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10250 -j ACCEPT
@@ -21,13 +24,14 @@ iptables -A INPUT -p tcp --dport 10256 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10257 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10259 -j ACCEPT
 iptables -A INPUT -p tcp --dport 30000:32767 -j ACCEPT
+iptables -A INPUT -p ip -j ACCEPT
 iptables -A INPUT -p icmp -j ACCEPT
 iptables-save > /etc/systemd/scripts/ip4save
 
 # Configuring SSH keys
 echo "Configuring ssh keys"
 ssh-keygen -t rsa -b 4096 -N '' <<< $'\ny' >/dev/null 2>&1
-cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys 
 
 # Configure kernel modules
 echo "Configuring kernel modules"
@@ -75,6 +79,11 @@ systemctl enable --now containerd 2>&1
 echo "Downloading nerdctl 1.7.6"
 wget -nv https://github.com/containerd/nerdctl/releases/download/v1.7.6/nerdctl-1.7.6-linux-amd64.tar.gz 2>&1
 tar Cxzvf /usr/local/bin nerdctl-1.7.6-linux-amd64.tar.gz
+
+# Install calicoctl
+echo "Downloading calicoctl 3.28.0"
+wget -nv "https://github.com/projectcalico/calico/releases/download/v3.28.0/calicoctl-linux-amd64" 2>&1
+install -o root -g root -m 0755 calicoctl-linux-amd64 /usr/local/bin/kubectl-calico
 
 # Install kubernetes tools & pre-pull images:
 echo "Downloading kubectl"
