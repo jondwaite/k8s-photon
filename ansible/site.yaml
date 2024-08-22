@@ -1,14 +1,17 @@
+# Create folder in vCenter (if not already existing) for our cluster
 - name: Create VMware folder for cluster VMs
   hosts: localhost
   roles:
     - create_vm_folder
 
+# Deploy first (3 by default) control-plane VMs to vCenter using template
 - name: Deploy control-plane VMs from template
   hosts: k8s_cp_nodes
   gather_facts: false
   roles:
     - deploy_nodes
 
+# On the first control-plane server configure our kubernetes cluster
 - name: Bootstrap kubernetes cluster first node
   hosts: k8s_cp_first_node
   gather_facts: false
@@ -17,6 +20,7 @@
     - init_kubeadm
     - install_calico
 
+# Join the additional control-plane nodes to our new cluster
 - name: Add additional control-plane nodes to cluster
   serial: 1   # Since we generate a new certificate-key for each 'add', do one at a time
   hosts: k8s_cp_other_nodes
@@ -24,6 +28,7 @@
   roles:
     - join_cluster_cp
 
+# Deploy the cluster worker VMs to vCenter using template
 - name: Deploy worker node VMs
   hosts: k8s_wk_nodes
   gather_facts: false
@@ -31,6 +36,20 @@
     - deploy_nodes
     - join_cluster_wk
 
+# Configure kube_vip to also be usable as an ingress controller
+- name: Configure kube_vip ingress 
+  hosts: k8s_cp_first_node
+  gather_facts: false
+  roles:
+    - config_kube_vip
+
+# Remove the temp folder created in ansible directory since it holds keys
+- name: Cleanup temp
+  hosts: localhost
+  roles:
+    - cleanup_temp
+
+# Install helm on all nodes for later use
 - name: Install helm
   hosts: k8s_all_nodes
   gather_facts: false

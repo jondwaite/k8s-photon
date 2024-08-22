@@ -1,0 +1,5 @@
+- name: Clean up temp directory from ansible
+  ansible.builtin.file:
+    path: temp
+    state: absent
+  delegate_to: localhost

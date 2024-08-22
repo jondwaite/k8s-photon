@@ -1,0 +1,11 @@
+- name: Apply kube_vip cloud controller yaml
+  ansible.builtin.command:
+    cmd: kubectl apply -f https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+  register: kubevip_controller
+  changed_when: kubevip_controller.rc != 0
+
+- name: Create kube_vip configmap
+  ansible.builtin.command:
+    cmd: kubectl create configmap -n kube-system kubevip --from-literal cidr-global={{ kube_vip_ingress_cidr }}
+  register: kubevip_configmap
+  changed_when: kubevip_configmap.rc != 0
