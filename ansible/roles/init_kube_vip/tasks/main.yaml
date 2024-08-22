@@ -1,0 +1,74 @@
+- name: Create manifest folder
+  ansible.builtin.file:
+    path: /etc/kubernetes/manifests
+    state: directory
+    recurse: true
+
+- name: Check if kube-vip.yaml already exists
+  ansible.builtin.stat:
+    path: /etc/kubernetes/manifests/kube-vip.yaml
+  register: kubevip
+
+- name: Get latest kube-vip version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/kube-vip/kube-vip/releases/latest
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: kube_vip_version
+  when: not kubevip.stat.exists
+
+- name: Pull kube-vip container image
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/ctr
+      - image
+      - pull
+      - ghcr.io/kube-vip/kube-vip:{{ kube_vip_version.json.name }}
+  register: kube_vip_pull_cmd
+  changed_when: kube_vip_pull_cmd.rc != 0
+  when: not kubevip.stat.exists
+
+- name: Create kube-vip manifest
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/ctr
+      - run
+      - --rm
+      - --net-host
+      - ghcr.io/kube-vip/kube-vip:{{ kube_vip_version.json.name }}
+      - vip
+      - /kube-vip
+      - manifest
+      - pod
+      - --interface
+      - "{{ vm_net_interface }}"
+      - --address
+      - "{{ control_plane_ip }}"
+      - --controlplane
+      - --services
+      - --arp
+      - --leaderElection
+  register: kube_vip_manifest_cmd
+  changed_when: kube_vip_manifest_cmd.rc != 0
+  when: not kubevip.stat.exists
+
+- name: Write kube-vip manifest file
+  ansible.builtin.copy:
+    content: "{{ kube_vip_manifest_cmd.stdout }}"
+    mode: '0640'
+    dest: /etc/kubernetes/manifests/kube-vip.yaml
+  when: not kubevip.stat.exists
+
+- name: Fixup kube-vip.yaml to use super_admin.conf instead of admin.conf
+  ansible.builtin.replace:
+    dest: /etc/kubernetes/manifests/kube-vip.yaml
+    regexp: '^(\s*)path: /etc/kubernetes/admin.conf'
+    replace: '\1path: /etc/kubernetes/super-admin.conf'
+  when: not kubevip.stat.exists
+
+- name: Copy the kube-vip.conf file for later distribution to control-plane nodes
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/manifests/kube-vip.yaml
+    dest: temp/
+    flat: true

@@ -1,0 +1,34 @@
+---
+- name: Initialize kubeadm cluster
+  ansible.builtin.command: >
+    kubeadm init --control-plane-endpoint={{ control_plane_hostname + '.' + dns_domain_name }}
+    --pod-network-cidr={{ pod_network_cidr }}
+    --service-cidr={{ service_network_cidr }}
+    --upload-certs
+  args:
+    creates: /etc/kubernetes/super-admin.conf
+  register: kubeadm_init_result
+
+- name: Create .kube directory
+  ansible.builtin.file:
+    path: $HOME/.kube
+    state: directory
+    mode: '0700'
+
+- name: Copy kube.config file
+  ansible.builtin.copy:
+    remote_src: true
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    mode: '0600'
+
+- name: Copy the super-admin.conf file for later distribution to control-plane nodes
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/super-admin.conf
+    dest: temp/
+    flat: true
+- name: Copy the admin.conf file for later distribution to worker nodes
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: temp/
+    flat: true

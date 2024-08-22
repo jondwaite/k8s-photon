@@ -1,0 +1,5 @@
+- name: Copy kube.config file
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/
+    mode: '0640'

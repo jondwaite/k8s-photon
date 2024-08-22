@@ -1,0 +1,11 @@
+---
+vcenter_datacenter: "<vCenter Datacenter>"            # The name of the vCenter Datacenter to deploy to
+vcenter_validate_certs: false                         # Whether to validate vCenter server certificate
+vcenter_datastore: "<vCenter Datastore>"              # The name of the vCenter Datastore to use for storage
+vcenter_cluster: "<vCenter Cluster>"                  # The name of the vCenter Cluster to deploy to
+vcenter_network_name: "<vCenter Network Name>"        # The name of the vCenter Network for the VMs
+vcenter_destination_folder: "<vCenter Folder Name>"   # The name of the vCenter Folder to deploy to (will be created if not existing)
+dns_domain_name: "<dns domain name>"                  # The DNS domain name (e.g. 'lab.internal')
+dns_servers:
+  - <dns server 1 IP>                                 # DNS Server 1 IP address (e.g. 8.8.8.8)
+  - <dns server 2 IP>                                 # DNS Server 2 IP address (e.g. 8.8.4.4) - optional

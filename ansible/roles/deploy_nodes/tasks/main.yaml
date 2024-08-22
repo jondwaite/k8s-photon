@@ -1,0 +1,33 @@
+- name: Deploy k8s node VMs from template               # Deploy VMs from packer template
+  delegate_to: localhost                                # Must run the 'create' from our admin host as our VMs don't exist yet
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'                  # From '/vars/secrets.yaml'
+    username: '{{ vcenter_username }}'                  # From '/vars/secrets.yaml'
+    password: '{{ vcenter_password }}'                  # From '/vars/secrets.yaml'
+    datacenter: '{{ vcenter_datacenter }}'              # From '/vars/environment.yaml'
+    validate_certs: '{{ vcenter_validate_certs }}'      # From '/vars/environment.yaml'
+    folder: '{{ vcenter_destination_folder }}'          # From '/vars/environment.yaml'
+    template: '{{ vm_template }}'                       # From '/vars/environment.yaml'
+    name: '{{ inventory_hostname }}'                    # Name of current VM being provisioned (Ansible from inventory.yaml)
+    state: '{{ vm_state }}'                             # From '/vars/cluster.yaml'
+    cluster: '{{ vcenter_cluster }}'                    # From '/vars/environment.yaml'
+    disk:
+      - size_gb: '{{ k8s_disk_gb }}'                    # From 'inventory.yaml'
+        type: '{{ vm_disk_type }}'                      # From '/vars/cluster.yaml'
+        datastore: '{{ vcenter_datastore }}'            # From '/vars/environment.yaml'
+    hardware:
+      memory_mb: '{{ k8s_ram_gb * 1024 }}'              # From 'inventory.yaml'
+      num_cpus: '{{ k8s_vcpus }}'                       # From 'inventory.yaml'
+      scsi: 'paravirtual'
+    networks:
+      - name: '{{ vcenter_network_name }}'              # From '/vars/environment.yaml'
+        start_connected: true
+        device_type: '{{ vm_net_type }}'                # From '/vars/cluster.yaml'
+        type: static
+        ip: '{{ ansible_host }}'                        # IP Address of current VM (Ansible from inventory.yaml)
+        netmask: '{{ vm_net_mask }}'                    # From '/vars/cluster.yaml'
+        gateway: '{{ vm_net_gw }}'                      # From '/vars/cluster.yaml'
+    customization:
+      domain: '{{ dns_domain_name }}'                   # From '/vars/cluster.yaml'
+      dns_servers: '{{ dns_servers }}'                  # From '/vars/cluster.yaml'
+    wait_for_ip_address: true

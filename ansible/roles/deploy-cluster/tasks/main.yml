@@ -1,0 +1,7 @@
+---
+
+# - name: Initialize cluster (kubeadm init)
+#   ansible.builtin.import_tasks: init_cluster.yaml
+
+# - name: Add control plane nodes to cluster
+#   ansible.builtin.import_tasks: cluster_add_cp_nodes.yaml

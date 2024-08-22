@@ -1,0 +1,5 @@
+- name: Install helm
+  ansible.builtin.shell:
+    cmd: set -o pipefail && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  register: helm_install
+  changed_when: helm_install.rc != 0

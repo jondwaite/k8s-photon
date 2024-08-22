@@ -1,0 +1,13 @@
+---
+pod_network_cidr: "172.30.24.0/21"
+service_network_cidr: "172.30.20.0/22"
+control_plane_ip: "172.30.16.10"
+control_plane_hostname: "k8s-cl01"
+vm_net_interface: "eth0"
+vm_net_type: "vmxnet3"
+vm_net_mask: "255.254.0.0"
+vm_net_gw: "172.30.0.1"
+vm_disk_type: "thin"
+vm_state: "poweredon"
+vm_template: "k8s-tmpl"
+schedule_pods_on_control_plane_nodes: false

@@ -1,0 +1,11 @@
+- name: Create vCenter Folder
+  community.vmware.vcenter_folder:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vcenter_datacenter }}'
+    validate_certs: '{{ vcenter_validate_certs }}'
+    folder_name: '{{ vcenter_destination_folder }}'
+    folder_type: 'vm'
+    state: present
+  delegate_to: localhost

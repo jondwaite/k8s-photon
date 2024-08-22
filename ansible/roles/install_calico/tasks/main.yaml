@@ -1,0 +1,45 @@
+- name: Check if calico.yaml already exists
+  ansible.builtin.stat:
+    path: $HOME/calico.yaml
+  register: calicoyaml
+
+- name: Download calico yaml
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+    dest: $HOME/calico.yaml
+    mode: '0640'
+  when: not calicoyaml.stat.exists
+
+- name: Configure IPV4 pool in calico yaml
+  ansible.builtin.replace:
+    path: $HOME/calico.yaml
+    regexp: '# - name: CALICO_IPV4POOL_CIDR'
+    replace: '- name: CALICO_IPV4POOL_CIDR'
+  when: not calicoyaml.stat.exists
+
+- name: Configure pod network in calico yaml
+  ansible.builtin.replace:
+    path: $HOME/calico.yaml
+    regexp: '#   value: "192.168.0.0/16"'
+    replace: '  value: "{{ pod_network_cidr }}"'
+  when: not calicoyaml.stat.exists
+
+- name: Apply calico yaml
+  ansible.builtin.shell: kubectl apply -f - < $HOME/calico.yaml
+  register: calico_apply
+  changed_when: calico_apply.rc != 0
+  when: not calicoyaml.stat.exists
+
+- name: Wait for calico-node to become ready
+  ansible.builtin.shell: >
+    kubectl wait --namespace=kube-system --for=jsonpath='{.status.phase}'=Running pods
+    --selector k8s-app=calico-node --timeout=600s
+  register: calico_node_ready
+  changed_when: calico_node_ready.rc != 0
+
+- name: Wait for calico-controller to become ready
+  ansible.builtin.shell: >
+    kubectl wait --namespace=kube-system --for=jsonpath='{.status.phase}'=Running pods
+    --selector k8s-app=calico-kube-controllers --timeout=600s
+  register: calico_controller_ready
+  changed_when: calico_controller_ready.rc != 0

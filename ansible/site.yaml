@@ -1,0 +1,38 @@
+- name: Create VMware folder for cluster VMs
+  hosts: localhost
+  roles:
+    - create_vm_folder
+
+- name: Deploy control-plane VMs from template
+  hosts: k8s_cp_nodes
+  gather_facts: false
+  roles:
+    - deploy_nodes
+
+- name: Bootstrap kubernetes cluster first node
+  hosts: k8s_cp_first_node
+  gather_facts: false
+  roles:
+    - init_kube_vip
+    - init_kubeadm
+    - install_calico
+
+- name: Add additional control-plane nodes to cluster
+  serial: 1   # Since we generate a new certificate-key for each 'add', do one at a time
+  hosts: k8s_cp_other_nodes
+  gather_facts: false
+  roles:
+    - join_cluster_cp
+
+- name: Deploy worker node VMs
+  hosts: k8s_wk_nodes
+  gather_facts: false
+  roles:
+    - deploy_nodes
+    - join_cluster_wk
+
+- name: Install helm
+  hosts: k8s_all_nodes
+  gather_facts: false
+  roles:
+    - install_helm
