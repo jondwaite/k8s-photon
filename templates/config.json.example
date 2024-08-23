@@ -27,6 +27,15 @@
             "disk_gb": 16
         }
     },
+    "nfs_server": {
+        "deploy_nfs": true,
+        "nfs_hostname": "k8s-cl01-nfs",
+        "nfs_ip": "172.30.16.4",
+        "nfs_vram_gb": 4,
+        "nfs_vcpu_cores": 2,
+        "nfs_boot_disk_gb": 16,
+        "nfs_data_disk_gb": 50
+    },
     "vmware_environment": {
         "vcenter_host": "<vcenter hostname or IP>",
         "vcenter_username": "<vcenter username>",

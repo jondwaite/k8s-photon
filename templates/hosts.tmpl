@@ -5,3 +5,6 @@
   {{ value }}   {{ key }} {{ key }}.{{ networking.dns_domain_name }}
 {% endfor -%}
 {{ kubernetes_cluster.cluster_ip }}   {{ kubernetes_cluster.cluster_hostname }} {{ kubernetes_cluster.cluster_hostname}}.{{ networking.dns_domain_name }}
+{% if nfs_server.deploy_nfs -%}
+{{ nfs_server.nfs_ip }}   {{ nfs_server.nfs_hostname }} {{ nfs_server.nfs_hostname}}.{{ networking.dns_domain_name }}
+{% endif %}

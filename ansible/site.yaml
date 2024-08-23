@@ -11,6 +11,13 @@
   roles:
     - deploy_nodes
 
+- name: Provision NFS server
+  hosts: nfs_server
+  gather_facts: false
+  roles:
+    - role: deploy_nfs_server
+      when: deploy_nfs
+
 # On the first control-plane server configure our kubernetes cluster
 - name: Bootstrap kubernetes cluster first node
   hosts: k8s_cp_first_node
@@ -37,7 +44,7 @@
     - join_cluster_wk
 
 # Configure kube_vip to also be usable as an ingress controller
-- name: Configure kube_vip ingress 
+- name: Configure kube_vip ingress
   hosts: k8s_cp_first_node
   gather_facts: false
   roles:

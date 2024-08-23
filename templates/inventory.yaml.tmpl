@@ -24,6 +24,17 @@ k8s_wk_nodes:
     k8s_ram_gb: {{ kubernetes_cluster.worker_node_spec.vram_gb }}
     k8s_disk_gb: {{ kubernetes_cluster.worker_node_spec.disk_gb }}
 
+nfs_server:
+  hosts:
+    {{ nfs_server.nfs_hostname }}:
+      ansible_host: {{ nfs_server.nfs_ip }}
+  vars:
+    deploy_nfs: {{ nfs_server.deploy_nfs | lower }}
+    nfs_vcpus: {{ nfs_server.nfs_vcpu_cores }}
+    nfs_ram_gb: {{ nfs_server.nfs_vram_gb }}
+    nfs_boot_disk_gb: {{ nfs_server.nfs_boot_disk_gb }}
+    nfs_data_disk_gb: {{ nfs_server.nfs_data_disk_gb }}
+
 k8s_cp_nodes:
   children:
     k8s_cp_first_node:
@@ -38,6 +49,7 @@ k8s_all_nodes:
     k8s_cp_first_node:
     k8s_cp_other_nodes:
     k8s_wk_nodes:
+    nfs_server:
   vars:
     ansible_connection: ssh
     ansible_user: root

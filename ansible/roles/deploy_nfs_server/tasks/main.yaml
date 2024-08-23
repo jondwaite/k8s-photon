@@ -1,0 +1,99 @@
+- name: Deploy NFS server VM from template              # Deploy VM from packer template
+  delegate_to: localhost                                # Run the 'create' from our admin host
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vcenter_datacenter }}'
+    validate_certs: '{{ vcenter_validate_certs }}'
+    folder: '{{ vcenter_destination_folder }}'
+    template: '{{ vm_template }}'
+    name: '{{ inventory_hostname }}'
+    state: '{{ vm_state }}'
+    cluster: '{{ vcenter_cluster }}'
+    disk:
+      - size_gb: '{{ nfs_boot_disk_gb }}'
+        type: '{{ vm_disk_type }}'
+        datastore: '{{ vcenter_datastore }}'
+      - size_gb: '{{ nfs_data_disk_gb }}'
+        type: '{{ vm_disk_type }}'
+        datastore: '{{ vcenter_datastore }}'
+    hardware:
+      memory_mb: '{{ nfs_ram_gb * 1024 }}'
+      num_cpus: '{{ nfs_vcpus }}'
+      scsi: 'paravirtual'
+    networks:
+      - name: '{{ vcenter_network_name }}'
+        start_connected: true
+        device_type: '{{ vm_net_type }}'
+        type: static
+        ip: '{{ ansible_host }}'
+        netmask: '{{ vm_net_mask }}'
+        gateway: '{{ vm_net_gw }}'
+    customization:
+      domain: '{{ dns_domain_name }}'
+      dns_servers: '{{ dns_servers }}'
+    wait_for_ip_address: true
+
+- name: Install parted binary
+  ansible.builtin.command:
+    cmd: tdnf install -y parted
+  register: parted_install
+  changed_when: parted_install.rc != 0
+
+- name: Partition NFS data disk
+  community.general.parted:
+    device: /dev/sdb
+    number: 1
+    state: present
+    fs_type: ext4
+
+- name: Format NFS data disk
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/sdb1
+    state: present
+
+- name: Create mount directory
+  ansible.builtin.file:
+    path: /mnt/data
+    state: directory
+    mode: '0777'
+    recurse: true
+
+- name: Mount the NFS data disk
+  ansible.posix.mount:
+    boot: true
+    fstype: ext4
+    path: /mnt/data
+    src: /dev/sdb1
+    state: mounted
+
+- name: Allow NFS through firewall - tcp
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_ports:
+      - "111"
+      - "2049"
+    jump: ACCEPT
+
+- name: Allow NFS through firewall - udp
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: 111
+    jump: ACCEPT
+
+- name: Export NFS filesystem
+  ansible.builtin.lineinfile:
+    path: /etc/exports
+    state: present
+    line: '/mnt/data  *(rw,no_root_squash,no_subtree_check)'
+
+- name: Start NFS service
+  ansible.builtin.systemd:
+    daemon-reload: true
+    state: started
+    enabled: true
+    name: nfs-server.service
