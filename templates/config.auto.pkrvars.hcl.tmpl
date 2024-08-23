@@ -1,0 +1,43 @@
+vcenter_server                = "{{ vmware_environment.vcenter_host}}"
+vcenter_insecure_connection   = {{ (not vmware_environment.vcenter_validate_certs) | lower }}
+vcenter_user                  = "{{ vmware_environment.vcenter_username }}"
+vcenter_password              = "{{ vmware_environment.vcenter_password }}"
+vcenter_datacenter            = "{{ vmware_environment.vm_datacenter }}"
+vcenter_cluster               = "{{ vmware_environment.vm_cluster }}"
+vcenter_datastore             = "{{ vmware_environment.vm_datacenter }}"
+vcenter_network               = "{{ vmware_environment.vm_network_pg }}"
+vm_folder                     = "{{ vmware_environment.vm_folder }}"
+iso_datastore                 = "{{ photonos.iso_datastore}}"
+iso_path                      = "{{ photonos.iso_path }}"
+iso_filename                  = "{{ photonos.iso_filename}}"
+root_password                 = "{{ vm_template.root_password }}"
+vm_name                       = "{{ vm_template.template_name }}"
+num_cpus                      = {{ kubernetes_cluster.control_plane_node_spec.vcpu_cores }}
+num_cpu_cores                 = 1
+num_vram_mb                   = {{ kubernetes_cluster.control_plane_node_spec.vram_gb }}
+disk_size_mb                  = {{ kubernetes_cluster.control_plane_node_spec.disk_gb }}
+disk_thin_provisioned         = {% if vmware_environment.vm_disk_type == 'thin' %}true{% else %}false{% endif %}
+firmware                      = "{{ vm_template.vm_firmware }}"
+vm_hw_version                 = {{ vm_template.vm_hardware_version }}
+
+# Access to template OS via SSH key (optional)
+ssh_key                       = "{{ ssh.ssh_key }}"
+
+# Additional Root CA certificate to by trusted by template VMs (optional)
+trusted_CA_root               = <<EOF
+{{ trusted_root_ca.ca_cert }}
+EOF
+
+# Download links for components to be installed in the template:
+dl_containerd                 = "https://github.com/containerd/containerd/releases/download/v1.7.20/containerd-1.7.20-linux-amd64.tar.gz"
+dl_containerd_service         = "https://raw.githubusercontent.com/containerd/containerd/main/containerd.service"
+dl_runc                       = "https://github.com/opencontainers/runc/releases/download/v1.1.13/runc.amd64"
+dl_cni_plugins                = "https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-amd64-v1.5.1.tgz"
+dl_nerdctl                    = "https://github.com/containerd/nerdctl/releases/download/v1.7.6/nerdctl-1.7.6-linux-amd64.tar.gz"
+dl_calicoctl                  = "https://github.com/projectcalico/calico/releases/download/v3.28.1/calicoctl-linux-amd64"
+dl_kubectl                    = "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl"
+dl_kubectl-convert            = "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl-convert"
+dl_crictl                     = "https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.31.1/crictl-v1.31.1-linux-amd64.tar.gz"
+dl_kubeadm-kubelet            = "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/{kubeadm,kubelet}"
+dl_kubelet-service            = "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubelet/kubelet.service"
+dl_kubeadm-config             = "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf"

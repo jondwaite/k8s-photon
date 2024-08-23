@@ -1,0 +1,15 @@
+---
+vcenter_hostname: "{{ vmware_environment.vcenter_host }}"
+vcenter_username: "{{ vmware_environment.vcenter_username }}"
+vcenter_password: "{{ vmware_environment.vcenter_password }}"
+vcenter_datacenter: "{{ vmware_environment.vm_datacenter }}"
+vcenter_validate_certs: {{ vmware_environment.vcenter_validate_certs | lower }}
+vcenter_datastore: "{{ vmware_environment.vm_datastore }}"
+vcenter_cluster: "{{ vmware_environment.vm_cluster }}"
+vcenter_network_name: "{{ vmware_environment.vm_network_pg }}"
+vcenter_destination_folder: "{{ vmware_environment.vm_folder }}"
+dns_domain_name: "{{ networking.dns_domain_name }}"
+dns_servers:
+{%- for dns_server in networking.dns_servers %}
+  - {{ dns_server }}
+{%- endfor %}

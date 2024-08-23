@@ -1,0 +1,45 @@
+{%- for key, value in kubernetes_cluster.control_plane_node_hosts.items() %}
+  {%- if loop.first -%}
+k8s_cp_first_node:
+  hosts:
+    {{ key }}:
+      ansible_host: {{ value }}
+
+k8s_cp_other_nodes:
+  hosts:
+  {%- else %}
+    {{ key }}:
+      ansible_host: {{ value }}
+  {%- endif %}
+{%- endfor %}
+
+k8s_wk_nodes:
+  hosts:
+{%- for key, value in kubernetes_cluster.worker_node_hosts.items() %}
+    {{ key }}:
+      ansible_host: {{ value }}
+{%- endfor %}
+  vars:
+    k8s_vcpus: {{ kubernetes_cluster.worker_node_spec.vcpu_cores }}
+    k8s_ram_gb: {{ kubernetes_cluster.worker_node_spec.vram_gb }}
+    k8s_disk_gb: {{ kubernetes_cluster.worker_node_spec.disk_gb }}
+
+k8s_cp_nodes:
+  children:
+    k8s_cp_first_node:
+    k8s_cp_other_nodes:
+  vars:
+    k8s_vcpus: {{ kubernetes_cluster.control_plane_node_spec.vcpu_cores }}
+    k8s_ram_gb: {{ kubernetes_cluster.control_plane_node_spec.vram_gb }}
+    k8s_disk_gb: {{ kubernetes_cluster.control_plane_node_spec.disk_gb }}
+
+k8s_all_nodes:
+  children:
+    k8s_cp_first_node:
+    k8s_cp_other_nodes:
+    k8s_wk_nodes:
+  vars:
+    ansible_connection: ssh
+    ansible_user: root
+    ansible_password: {{ vm_template.root_password }}
+    ansible_python_interpreter: /usr/bin/python

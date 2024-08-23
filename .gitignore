@@ -1,5 +1,5 @@
 config.auto.pkrvars.hcl
-secrets.yaml
 environment.yaml
 /.vscode
 /ansible/temp/
+config.json

@@ -1,0 +1,14 @@
+---
+pod_network_cidr: "{{ kubernetes_cluster.pod_network_cidr }}"
+service_network_cidr: "{{ kubernetes_cluster.service_network_cidr }}"
+kube_vip_ingress_cidr: "{{ kubernetes_cluster.kube_vip_ingress_cidr }}"
+control_plane_hostname: "{{ kubernetes_cluster.cluster_hostname }}"
+control_plane_ip: "{{ kubernetes_cluster.cluster_ip }}"
+vm_net_interface: "{{ vmware_environment.vm_net_interface }}"
+vm_net_type: "{{ vmware_environment.vm_net_type }}"
+vm_net_mask: "{{ networking.subnet_mask }}"
+vm_net_gw: "{{ networking.default_gateway }}"
+vm_disk_type: "{{ vmware_environment.vm_disk_type }}"
+vm_state: "{{ vmware_environment.vm_state }}"
+vm_template: "{{ vm_template.template_name }}"
+schedule_pods_on_control_plane_nodes: {{ kubernetes_cluster.schedule_pods_on_control_plane_nodes | lower }}
