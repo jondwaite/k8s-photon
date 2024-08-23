@@ -1,5 +1,8 @@
 config.auto.pkrvars.hcl
+cluster.yaml
 environment.yaml
+inventory.yaml
+hosts
 /.vscode
 /ansible/temp/
 config.json
