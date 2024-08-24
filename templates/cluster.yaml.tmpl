@@ -12,3 +12,4 @@ vm_disk_type: "{{ vmware_environment.vm_disk_type }}"
 vm_state: "{{ vmware_environment.vm_state }}"
 vm_template: "{{ vm_template.template_name }}"
 schedule_pods_on_control_plane_nodes: {{ kubernetes_cluster.schedule_pods_on_control_plane_nodes | lower }}
+nfs_server: "{{ nfs_server.nfs_hostname }}.{{ networking.dns_domain_name }}"

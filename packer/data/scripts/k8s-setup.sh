@@ -7,8 +7,8 @@ tdnf update -y -q &>/dev/null
 echo "tdnf: Removing docker, containerd and runc"
 tdnf remove -y -q docker* containerd* runc
 
-echo "tdnf: Installing wget, tar, jq, socat, ethtool, conntrack, git and nfs-utils"
-tdnf install -y -q wget tar jq socat ethtool conntrack git nfs-utils 2>&1
+echo "tdnf: Installing wget, tar, jq, socat, ethtool, conntrack, git, python3-pip and nfs-utils"
+tdnf install -y -q wget tar jq socat ethtool conntrack git python3-pip nfs-utils 2>&1
 
 # Set up firewall rules
 echo "Configuring firewall rules"
@@ -100,6 +100,12 @@ tar Cxzvf /usr/local/bin nerdctl*.tar.gz
 echo "Downloading calicoctl from $DL_CALICOCTL"
 wget -nv "$DL_CALICOCTL" 2>&1
 install -o root -g root -m 0755 calicoctl-linux-amd64 /usr/local/bin/kubectl-calico
+
+# Install python modules required by ansible to configure system
+echo "Installing python modules"
+rm -rf /usr/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/
+pip install --upgrade pip --root-user-action=ignore
+pip install openshift pyyaml kubernetes --root-user-action=ignore
 
 # Install kubernetes tools & pre-pull images:
 echo "Downloading kubectl from $DL_KUBECTL"

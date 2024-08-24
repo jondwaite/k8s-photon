@@ -1,0 +1,7 @@
+- name: Untaint control-plane nodes from scheduling pods
+  ansible.builtin.command:
+    cmd: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+  register: untaint_cp_nodes
+  ignore_errors: true
+  failed_when: untaint_cp_nodes.rc != >= 2
+  changed_when: untaint_cp_nodes.rc < 2

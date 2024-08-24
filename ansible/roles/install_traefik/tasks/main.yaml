@@ -1,0 +1,17 @@
+- name: Add traefik chart repo
+  kubernetes.core.helm_repository:
+    name: traefik
+    repo_url: "https://traefik.github.io/charts"
+
+- name: Create namespace
+  kubernetes.core.k8s:
+    name: traefik
+    kind: namespace
+    state: present
+
+- name: Install traefik chart
+  kubernetes.core.helm:
+    name: traefik
+    chart_ref: traefik/traefik
+    namespace: traefik
+    wait: true

@@ -56,9 +56,26 @@
   roles:
     - cleanup_temp
 
+# Untaint control plane nodes from scheduling pods if option selected
+- name: Untaint control plane nodes
+  hosts: k8s_cp_first_node
+  gather_facts: false
+  roles:
+    - role: untaint_cp_nodes
+      when: schedule_pods_on_control_plane_nodes
+
 # Install helm on all nodes for later use
 - name: Install helm
   hosts: k8s_all_nodes
   gather_facts: false
   roles:
     - install_helm
+
+# configure packages
+- name: Configure additional packages
+  hosts: k8s_cp_first_node
+  gather_facts: false
+  roles:
+    - config_nfs
+    - install_portainer
+    - install_traefik

@@ -5,7 +5,7 @@
         "pod_network_cidr": "172.30.24.0/21",
         "service_network_cidr": "172.30.20.0/22",
         "kube_vip_ingress_cidr": "172.30.17.0/24",
-        "schedule_pods_on_control_plane_nodes": false,
+        "schedule_pods_on_control_plane_nodes": true,
         "control_plane_node_hosts": {
             "k8s-cl01-c01": "172.30.16.11",
             "k8s-cl01-c02": "172.30.16.12",

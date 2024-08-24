@@ -1,0 +1,20 @@
+- name: Add portainer chart repo
+  kubernetes.core.helm_repository:
+    name: portainer
+    repo_url: "https://portainer.github.io/k8s"
+
+- name: Create namespace
+  kubernetes.core.k8s:
+    name: portainer
+    kind: namespace
+    state: present
+
+- name: Install portainer chart
+  kubernetes.core.helm:
+    name: portainer
+    chart_ref: portainer/portainer
+    namespace: portainer
+    set_values:
+      - value: service.type=LoadBalancer
+      - value: tls.force=true
+    wait: true
