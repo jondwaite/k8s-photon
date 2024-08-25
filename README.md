@@ -46,6 +46,8 @@ This repository has been developed using:
 
 ## Usage
 
+For instructions on configuring a suitable administration image to run cluster deployments, see [admin-workstation.md](admin-workstation.md).
+
 The envisaged usage sequence is:
 
 1) Copy the `config.json.example` file in the root of the repository and update the configuration values to suit your environment, if saved as `config.json` it will be used automatically in the next step.
