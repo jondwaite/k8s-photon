@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# You must configure ./templates/config.json prior to running this script - it won't work without a configuration!
+configfile=${1:-./config.json}
 
-if [[ ! -f ./templates/config.json ]] ; then
-  echo "The config.json file doesn't exist in the templates folder"
-  echo "Copy and update the config.json.example file to suit your environment"
-  exit
+if [[ ! -f $configfile ]] ; then
+  echo "No configuration file specified and no config.json found."
+  echo "Copy the config.json.example file, adjust for your environmnent and save as config.json (to be used automatically) or pass the filename to deploy.sh"
+  exit 1
 fi
 
 echo "Creating configuration files from templates..."
-cd templates
-./create-templates.py
+./templates/create-templates.py $configfile
 
 echo "Building template VM..."
-cd ../packer
+cd packer
 packer init .
 packer build .
 

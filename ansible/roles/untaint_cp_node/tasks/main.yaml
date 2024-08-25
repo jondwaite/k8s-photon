@@ -1,0 +1,6 @@
+- name: Untaint control-plane nodes from scheduling pods
+  ansible.builtin.shell: >
+    kubectl taint node {{ inventory_hostname }} node-role.kubernetes.io/control-plane-
+  ignore_errors: true
+  register: untaint_cp_nodes
+  changed_when: untaint_cp_nodes.rc != 0

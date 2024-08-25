@@ -5,6 +5,7 @@
     --pod-network-cidr={{ pod_network_cidr }}
     --service-cidr={{ service_network_cidr }}
     --upload-certs
+    --ignore-preflight-errors=numCPU
   args:
     creates: /etc/kubernetes/super-admin.conf
   register: kubeadm_init_result

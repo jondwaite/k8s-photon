@@ -85,6 +85,12 @@ echo "Downloading calicoctl 3.28.1"
 wget -nv "https://github.com/projectcalico/calico/releases/download/v3.28.1/calicoctl-linux-amd64" 2>&1
 install -o root -g root -m 0755 calicoctl-linux-amd64 /usr/local/bin/kubectl-calico
 
+# Install python modules required by ansible to configure system
+echo "Installing python modules"
+rm -rf /usr/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/
+pip install --upgrade pip --root-user-action=ignore
+pip install openshift pyyaml kubernetes --root-user-action=ignore
+
 # Install kubernetes tools & pre-pull images:
 echo "Downloading kubectl"
 curl -sSLO "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl"

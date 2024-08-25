@@ -56,7 +56,7 @@
 
 - name: Create mount directory
   ansible.builtin.file:
-    path: /mnt/data
+    path: "{{ nfs_mount_path }}"
     state: directory
     mode: '0777'
     recurse: true
@@ -65,7 +65,7 @@
   ansible.posix.mount:
     boot: true
     fstype: ext4
-    path: /mnt/data
+    path: "{{ nfs_mount_path }}"
     src: /dev/sdb1
     state: mounted
 
@@ -89,7 +89,7 @@
   ansible.builtin.lineinfile:
     path: /etc/exports
     state: present
-    line: '/mnt/data  *(rw,no_root_squash,no_subtree_check)'
+    line: "{{ nfs_mount_path }}  *(rw,no_root_squash,no_subtree_check)"
 
 - name: Start NFS service
   ansible.builtin.systemd:

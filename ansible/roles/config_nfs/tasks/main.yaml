@@ -6,8 +6,9 @@
 - name: Install csi-driver-nfs chart
   kubernetes.core.helm:
     name: csi-driver-nfs
-    chart_ref: latest/csi-driver-nfs
+    chart_ref: csi-driver-nfs/csi-driver-nfs
     namespace: kube-system
+    timeout: 10m0s
     wait: true
 
 - name: Create StorageClass

@@ -29,6 +29,7 @@
     {{ join_cmd.stdout }}
     --control-plane
     --certificate-key {{ cert_key.stdout_lines[-1] }}
+    --ignore-preflight-errors=numCPU
   register: join_cluster
   changed_when: join_cluster.rc != 0
   when: not k8sadminconf.stat.exists

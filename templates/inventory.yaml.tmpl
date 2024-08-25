@@ -35,6 +35,11 @@ nfs_server:
     nfs_boot_disk_gb: {{ nfs_server.nfs_boot_disk_gb }}
     nfs_data_disk_gb: {{ nfs_server.nfs_data_disk_gb }}
 
+k8s_cluster:
+  hosts:
+    {{ kubernetes_cluster.cluster_hostname }}:
+      ansible_host: {{ kubernetes_cluster.cluster_ip }}
+
 k8s_cp_nodes:
   children:
     k8s_cp_first_node:
@@ -49,8 +54,10 @@ k8s_all_nodes:
     k8s_cp_first_node:
     k8s_cp_other_nodes:
     k8s_wk_nodes:
+    k8s_cluster:
     nfs_server:
   vars:
+    nfs_mount_path: {{ nfs_server.nfs_mount_path }}
     ansible_connection: ssh
     ansible_user: root
     ansible_password: {{ vm_template.root_password }}

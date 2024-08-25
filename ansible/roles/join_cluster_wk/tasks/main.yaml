@@ -18,7 +18,7 @@
 
 - name: Join node to kubernetes cluster
   ansible.builtin.command:
-    cmd: "{{ join_cmd.stdout }}"
+    cmd: "{{ join_cmd.stdout }} --ignore-preflight-errors=numCPU"
   register: join_worker_cluster
   changed_when: join_worker_cluster.rc != 0
   when: not kubeletconf.stat.exists

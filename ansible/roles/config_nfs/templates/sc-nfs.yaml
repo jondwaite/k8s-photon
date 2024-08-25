@@ -7,7 +7,7 @@
     provisioner: nfs.csi.k8s.io
     parameters:
       server: [[ nfs_server ]]
-      share: /mnt/data
+      share: [[ nfs_mount_path ]]
     reclaimPolicy: Delete
     volumeBindingMode: Immediate
     mountOptions:

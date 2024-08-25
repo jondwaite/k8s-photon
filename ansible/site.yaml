@@ -35,6 +35,7 @@
   roles:
     - join_cluster_cp
 
+
 # Deploy the cluster worker VMs to vCenter using template
 - name: Deploy worker node VMs
   hosts: k8s_wk_nodes
@@ -58,10 +59,10 @@
 
 # Untaint control plane nodes from scheduling pods if option selected
 - name: Untaint control plane nodes
-  hosts: k8s_cp_first_node
+  hosts: k8s_cp_nodes
   gather_facts: false
   roles:
-    - role: untaint_cp_nodes
+    - role: untaint_cp_node
       when: schedule_pods_on_control_plane_nodes
 
 # Install helm on all nodes for later use
@@ -71,7 +72,7 @@
   roles:
     - install_helm
 
-# configure packages
+# configure kubernetes packages
 - name: Configure additional packages
   hosts: k8s_cp_first_node
   gather_facts: false
