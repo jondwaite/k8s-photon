@@ -9,7 +9,7 @@
     folder: '{{ vcenter_destination_folder }}'
     template: '{{ vm_template }}'
     name: '{{ inventory_hostname }}'
-    state: '{{ vm_state }}'
+    state: 'poweredon'
     cluster: '{{ vcenter_cluster }}'
     disk:
       - size_gb: '{{ k8s_disk_gb }}'

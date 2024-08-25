@@ -9,7 +9,7 @@
     folder: '{{ vcenter_destination_folder }}'
     template: '{{ vm_template }}'
     name: '{{ inventory_hostname }}'
-    state: '{{ vm_state }}'
+    state: 'poweredon'
     cluster: '{{ vcenter_cluster }}'
     disk:
       - size_gb: '{{ nfs_boot_disk_gb }}'
@@ -34,6 +34,14 @@
       domain: '{{ dns_domain_name }}'
       dns_servers: '{{ dns_servers }}'
     wait_for_ip_address: true
+
+- name: Updte /etc/hosts with names
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    line: "{{ hostvars[item].ansible_host }}  {{ hostvars[item].inventory_hostname }} {{ hostvars[item].inventory_hostname }}.{{ dns_domain_name }}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
 
 - name: Install parted binary
   ansible.builtin.command:

@@ -40,9 +40,9 @@ install -m 755 packer /usr/local/bin
 
 Install and configure [`ansible`](https://www.ansible.com/) using the following, pyvmomi is required for ansible to talk to vSphere:
 ```
+rm -rf /usr/lib/python3.11/site-packages/setuptools-65.5.0.dist-info
+pip install --upgrade pip --root-user-action=ignore
 pip install ansible pyvmomi jsonpath openshift pyyaml kubernetes --root-user-action=ignore
-ansible-galaxy collection install community.general
-ansible-galaxy collection install community.vmware
 ```
 
 ### Clone the [k8s-photon](https://github.com/jondwaite/k8s-photon) repo
