@@ -1,4 +1,4 @@
-# Create folder in vCenter (if not already existing) for our cluster
+# Create folder in vCenter (if not already existing) for the cluster
 - name: Create VMware folder for cluster VMs
   hosts: localhost
   roles:
@@ -74,13 +74,13 @@
 
 # Install helm on all nodes for later use
 - name: Install helm
-  hosts: k8s_all_nodes
+  hosts: k8s_nodes
   gather_facts: false
   roles:
     - install_helm
 
-# configure kubernetes packages
-- name: Configure additional packages
+# Install and configure kubernetes packages
+- name: Install and configure additional kubernetes packages
   hosts: k8s_cp_first_node
   gather_facts: false
   roles:

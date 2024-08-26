@@ -27,6 +27,8 @@ k8s_wk_nodes:
         type: {{ vmware_environment.vm_disk_type }}
         datastore: {{ vmware_environment.vm_datastore }}
 
+{%- if nfs_server.deploy_nfs %}
+
 nfs_server:
   hosts:
     {{ nfs_server.nfs_hostname }}:
@@ -42,6 +44,7 @@ nfs_server:
       - size_gb: {{ nfs_server.nfs_data_disk_gb }}
         type: {{ vmware_environment.vm_disk_type }}
         datastore: {{ vmware_environment.vm_datastore }}
+{%- endif %}
 
 k8s_cluster:
   hosts:
@@ -60,13 +63,17 @@ k8s_cp_nodes:
         type: {{ vmware_environment.vm_disk_type }}
         datastore: {{ vmware_environment.vm_datastore }}
 
-k8s_all_nodes:
+k8s_nodes:
   children:
     k8s_cp_first_node:
     k8s_cp_other_nodes:
     k8s_wk_nodes:
+
+k8s_all_nodes:
+  children:
+    k8s_nodes:
     k8s_cluster:
-    nfs_server:
+    {% if nfs_server.deploy_nfs %}nfs_server:{% endif %}
   vars:
     nfs_mount_path: {{ nfs_server.nfs_mount_path }}
     ansible_connection: ssh
