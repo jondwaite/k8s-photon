@@ -1,0 +1,62 @@
+- name: Install parted binary
+  ansible.builtin.command:
+    cmd: tdnf install -y parted
+  register: parted_install
+  changed_when: parted_install.rc != 0
+
+- name: Partition NFS data disk
+  community.general.parted:
+    device: /dev/sdb
+    number: 1
+    state: present
+    fs_type: ext4
+
+- name: Format NFS data disk
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/sdb1
+    state: present
+
+- name: Create mount directory
+  ansible.builtin.file:
+    path: "{{ nfs_mount_path }}"
+    state: directory
+    mode: '0777'
+    recurse: true
+
+- name: Mount the NFS data disk
+  ansible.posix.mount:
+    boot: true
+    fstype: ext4
+    path: "{{ nfs_mount_path }}"
+    src: /dev/sdb1
+    state: mounted
+
+- name: Allow NFS through firewall - tcp
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_ports:
+      - "111"
+      - "2049"
+    jump: ACCEPT
+
+- name: Allow NFS through firewall - udp
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: 111
+    jump: ACCEPT
+
+- name: Export NFS filesystem
+  ansible.builtin.lineinfile:
+    path: /etc/exports
+    state: present
+    line: "{{ nfs_mount_path }}  *(rw,no_root_squash,no_subtree_check)"
+
+- name: Start NFS service
+  ansible.builtin.systemd:
+    daemon-reload: true
+    state: started
+    enabled: true
+    name: nfs-server.service

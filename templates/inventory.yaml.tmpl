@@ -20,9 +20,12 @@ k8s_wk_nodes:
       ansible_host: {{ value }}
 {%- endfor %}
   vars:
-    k8s_vcpus: {{ kubernetes_cluster.worker_node_spec.vcpu_cores }}
-    k8s_ram_gb: {{ kubernetes_cluster.worker_node_spec.vram_gb }}
-    k8s_disk_gb: {{ kubernetes_cluster.worker_node_spec.disk_gb }}
+    vm_vcpus: {{ kubernetes_cluster.worker_node_spec.vcpu_cores }}
+    vm_ram_gb: {{ kubernetes_cluster.worker_node_spec.vram_gb }}
+    vm_disk:
+      - size_gb: {{ kubernetes_cluster.worker_node_spec.disk_gb }}
+        type: {{ vmware_environment.vm_disk_type }}
+        datastore: {{ vmware_environment.vm_datastore }}
 
 nfs_server:
   hosts:
@@ -30,10 +33,15 @@ nfs_server:
       ansible_host: {{ nfs_server.nfs_ip }}
   vars:
     deploy_nfs: {{ nfs_server.deploy_nfs | lower }}
-    nfs_vcpus: {{ nfs_server.nfs_vcpu_cores }}
-    nfs_ram_gb: {{ nfs_server.nfs_vram_gb }}
-    nfs_boot_disk_gb: {{ nfs_server.nfs_boot_disk_gb }}
-    nfs_data_disk_gb: {{ nfs_server.nfs_data_disk_gb }}
+    vm_vcpus: {{ nfs_server.nfs_vcpu_cores }}
+    vm_ram_gb: {{ nfs_server.nfs_vram_gb }}
+    vm_disk:
+      - size_gb: {{ nfs_server.nfs_boot_disk_gb }}
+        type: {{ vmware_environment.vm_disk_type }}
+        datastore: {{ vmware_environment.vm_datastore }}
+      - size_gb: {{ nfs_server.nfs_data_disk_gb }}
+        type: {{ vmware_environment.vm_disk_type }}
+        datastore: {{ vmware_environment.vm_datastore }}
 
 k8s_cluster:
   hosts:
@@ -45,9 +53,12 @@ k8s_cp_nodes:
     k8s_cp_first_node:
     k8s_cp_other_nodes:
   vars:
-    k8s_vcpus: {{ kubernetes_cluster.control_plane_node_spec.vcpu_cores }}
-    k8s_ram_gb: {{ kubernetes_cluster.control_plane_node_spec.vram_gb }}
-    k8s_disk_gb: {{ kubernetes_cluster.control_plane_node_spec.disk_gb }}
+    vm_vcpus: {{ kubernetes_cluster.control_plane_node_spec.vcpu_cores }}
+    vm_ram_gb: {{ kubernetes_cluster.control_plane_node_spec.vram_gb }}
+    vm_disk:
+      - size_gb: {{ kubernetes_cluster.control_plane_node_spec.disk_gb }}
+        type: {{ vmware_environment.vm_disk_type }}
+        datastore: {{ vmware_environment.vm_datastore }}
 
 k8s_all_nodes:
   children:

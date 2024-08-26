@@ -1,5 +1,5 @@
-- name: Deploy k8s node VMs from template               # Deploy VMs from packer template
-  delegate_to: localhost                                # Must run the 'create' from our admin host as our VMs don't exist yet
+- name: Deploy vSphere VM from template
+  delegate_to: localhost
   community.vmware.vmware_guest:
     hostname: '{{ vcenter_hostname }}'
     username: '{{ vcenter_username }}'
@@ -12,12 +12,10 @@
     state: 'poweredon'
     cluster: '{{ vcenter_cluster }}'
     disk:
-      - size_gb: '{{ k8s_disk_gb }}'
-        type: '{{ vm_disk_type }}'
-        datastore: '{{ vcenter_datastore }}'
+      '{{ vm_disk }}'
     hardware:
-      memory_mb: '{{ k8s_ram_gb * 1024 }}'
-      num_cpus: '{{ k8s_vcpus }}'
+      memory_mb: '{{ vm_ram_gb * 1024 }}'
+      num_cpus: '{{ vm_vcpus }}'
       scsi: 'paravirtual'
     networks:
       - name: '{{ vcenter_network_name }}'
