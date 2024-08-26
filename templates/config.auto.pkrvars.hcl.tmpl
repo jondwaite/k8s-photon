@@ -7,9 +7,9 @@ vcenter_cluster               = "{{ vmware_environment.vm_cluster }}"
 vcenter_datastore             = "{{ vmware_environment.vm_datastore }}"
 vcenter_network               = "{{ vmware_environment.vm_network_pg }}"
 vm_folder                     = "{{ vmware_environment.vm_folder }}"
-iso_datastore                 = "{{ photonos.iso_datastore}}"
-iso_path                      = "{{ photonos.iso_path }}"
-iso_filename                  = "{{ photonos.iso_filename}}"
+iso_datastore                 = "{{ vmware_environment.photon_os_media.iso_datastore }}"
+iso_path                      = "{{ vmware_environment.photon_os_media.iso_path }}"
+iso_filename                  = "{{ vmware_environment.photon_os_media.iso_filename }}"
 root_password                 = "{{ vm_template.root_password }}"
 vm_name                       = "{{ vm_template.template_name }}"
 num_cpus                      = {{ kubernetes_cluster.control_plane_node_spec.vcpu_cores }}
@@ -21,11 +21,11 @@ firmware                      = "{{ vm_template.vm_firmware }}"
 vm_hw_version                 = {{ vm_template.vm_hardware_version }}
 
 # Access to template OS via SSH key (optional)
-ssh_key                       = "{{ ssh.ssh_key }}"
+ssh_key                       = "{{ vm_template.ssh_key }}"
 
 # Additional Root CA certificate to by trusted by template VMs (optional)
 trusted_CA_root               = <<EOF
-{{ trusted_root_ca.ca_cert }}
+{{ vm_template.trusted_root_ca.ca_cert }}
 EOF
 
 # Download links for components to be installed in the template:

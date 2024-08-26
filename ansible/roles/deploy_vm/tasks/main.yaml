@@ -35,5 +35,7 @@
     dest: /etc/hosts
     line: "{{ hostvars[item].ansible_host }}  {{ hostvars[item].inventory_hostname }} {{ hostvars[item].inventory_hostname }}.{{ dns_domain_name }}"
     state: present
-  when: hostvars[item].ansible_host is defined
+  when:
+    - hostvars[item].ansible_host is defined
+    - use_hosts_file
   with_items: "{{ groups.all }}"

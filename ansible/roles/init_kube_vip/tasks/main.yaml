@@ -44,7 +44,7 @@
       - --interface
       - "{{ vm_net_interface }}"
       - --address
-      - "{{ control_plane_ip }}"
+      - "{{ cluster_ip }}"
       - --controlplane
       - --services
       - --arp

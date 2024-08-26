@@ -5,12 +5,20 @@
     - create_vm_folder
 
 # Deploy first (3 by default) control-plane VMs to vCenter using template
-- name: Deploy control-plane VMs from template
+- name: Deploy cluster VMs from template
   hosts: k8s_cp_nodes
   gather_facts: false
   roles:
     - deploy_vm
 
+# Deploy worker node VMs to vCenter using template
+- name: Provision worker nodes from template
+  hosts: k8s_wk_nodes
+  gather_facts: false
+  roles:
+    - deploy_vm
+
+# Deploy NFS server VM to vCenter using template (if needed)
 - name: Provision NFS server
   hosts: nfs_server
   gather_facts: false
@@ -19,7 +27,7 @@
     - role: config_nfs_server
       when: deploy_nfs
 
-# On the first control-plane server configure our kubernetes cluster
+# On the first control-plane node create and configure the kubernetes cluster
 - name: Bootstrap kubernetes cluster first node
   hosts: k8s_cp_first_node
   gather_facts: false
@@ -36,14 +44,20 @@
   roles:
     - join_cluster_cp
 
-
-# Deploy the cluster worker VMs to vCenter using template
-- name: Deploy worker node VMs
+# Join the worker nodes to the cluster
+- name: Join worker nodes to cluster
   hosts: k8s_wk_nodes
   gather_facts: false
   roles:
-    - deploy_vm
     - join_cluster_wk
+
+# Untaint control plane nodes from scheduling pods if option selected
+- name: Untaint control plane nodes
+  hosts: k8s_cp_nodes
+  gather_facts: false
+  roles:
+    - role: untaint_cp_node
+      when: schedule_pods_on_control_plane_nodes
 
 # Configure kube_vip to also be usable as an ingress controller
 - name: Configure kube_vip ingress
@@ -58,14 +72,6 @@
   roles:
     - cleanup_temp
 
-# Untaint control plane nodes from scheduling pods if option selected
-- name: Untaint control plane nodes
-  hosts: k8s_cp_nodes
-  gather_facts: false
-  roles:
-    - role: untaint_cp_node
-      when: schedule_pods_on_control_plane_nodes
-
 # Install helm on all nodes for later use
 - name: Install helm
   hosts: k8s_all_nodes
@@ -79,5 +85,7 @@
   gather_facts: false
   roles:
     - config_k8s_storage
-    - install_portainer
-    - install_traefik
+    - role: install_portainer
+      when: install_portainer
+    - role: install_traefik
+      when: install_traefik

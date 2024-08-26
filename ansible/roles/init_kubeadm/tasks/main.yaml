@@ -1,7 +1,7 @@
 ---
 - name: Initialize kubeadm cluster
   ansible.builtin.command: >
-    kubeadm init --control-plane-endpoint={{ control_plane_hostname + '.' + dns_domain_name }}
+    kubeadm init --control-plane-endpoint={{ cluster_hostname + '.' + dns_domain_name }}
     --pod-network-cidr={{ pod_network_cidr }}
     --service-cidr={{ service_network_cidr }}
     --upload-certs
