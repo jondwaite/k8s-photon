@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-# Uses jinja2 with template files in ./templates/ to generate packer and ansible configuration based on config.json:
+# Uses jinja2 with template files in ./templates/ to generate packer and ansible configuration 
+# based on supplied config file:
 #
-#   'inventory.yaml.tmpl' becomes 'ansible/inventory.yaml'
-#   'cluster.yaml.tmpl' becomes 'ansible/group_vars/all/cluster.yaml'
-#   'environment.yaml.tmpl' becomes 'ansible/group_vars/all/environment.yaml'
-#   'config.auto.pkrvars.hcl.tmpl' becomes 'packer/config.auto.pkrvars.hcl'
+#  'inventory.yaml.tmpl' becomes 'ansible/inventory.yaml'
+#  'cluster.yaml.tmpl' becomes 'ansible/group_vars/all/cluster.yaml'
+#  'environment.yaml.tmpl' becomes 'ansible/group_vars/all/environment.yaml'
+#  'config.auto.pkrvars.hcl.tmpl' becomes 'packer/config.auto.pkrvars.hcl'
 
 from jinja2 import Template
 import json
@@ -35,4 +36,5 @@ for template in templates:
     f.write(template_object.render(config_data))
     f.close()
     print(f"Generated '{template['output']}' from template '{template['tmpl']}' using config file '{configfile}'.")
+
 print("Done creating configuration files from templates - check for accuracy before using them")

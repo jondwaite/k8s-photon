@@ -24,8 +24,8 @@ k8s_wk_nodes:
     vm_ram_gb: {{ kubernetes_cluster.worker_node_spec.vram_gb }}
     vm_disk:
       - size_gb: {{ kubernetes_cluster.worker_node_spec.disk_gb }}
-        type: {{ vmware_environment.vm_disk_type }}
-        datastore: {{ vmware_environment.vm_datastore }}
+        type: {{ vcenter_environment.vm_disk_type }}
+        datastore: {{ vcenter_environment.vm_datastore }}
 
 {%- if nfs_server.deploy_nfs %}
 
@@ -39,11 +39,11 @@ nfs_server:
     vm_ram_gb: {{ nfs_server.nfs_vram_gb }}
     vm_disk:
       - size_gb: {{ nfs_server.nfs_boot_disk_gb }}
-        type: {{ vmware_environment.vm_disk_type }}
-        datastore: {{ vmware_environment.vm_datastore }}
+        type: {{ vcenter_environment.vm_disk_type }}
+        datastore: {{ vcenter_environment.vm_datastore }}
       - size_gb: {{ nfs_server.nfs_data_disk_gb }}
-        type: {{ vmware_environment.vm_disk_type }}
-        datastore: {{ vmware_environment.vm_datastore }}
+        type: {{ vcenter_environment.vm_disk_type }}
+        datastore: {{ vcenter_environment.vm_datastore }}
 {%- endif %}
 
 k8s_cluster:
@@ -60,8 +60,8 @@ k8s_cp_nodes:
     vm_ram_gb: {{ kubernetes_cluster.control_plane_node_spec.vram_gb }}
     vm_disk:
       - size_gb: {{ kubernetes_cluster.control_plane_node_spec.disk_gb }}
-        type: {{ vmware_environment.vm_disk_type }}
-        datastore: {{ vmware_environment.vm_datastore }}
+        type: {{ vcenter_environment.vm_disk_type }}
+        datastore: {{ vcenter_environment.vm_datastore }}
 
 k8s_nodes:
   children:
@@ -75,6 +75,7 @@ k8s_all_nodes:
     k8s_cluster:
     {% if nfs_server.deploy_nfs %}nfs_server:{% endif %}
   vars:
+    target_hv: {{ target_hv }}
     nfs_mount_path: {{ nfs_server.nfs_mount_path }}
     ansible_connection: ssh
     ansible_user: root

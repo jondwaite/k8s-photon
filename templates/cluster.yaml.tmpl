@@ -8,11 +8,10 @@ schedule_pods_on_control_plane_nodes: {{ kubernetes_cluster.schedule_pods_on_con
 install_portainer: {{ kubernetes_cluster.install_portainer | lower }}
 install_traefik: {{ kubernetes_cluster.install_traefik | lower }}
 deploy_nfs: {{ nfs_server.deploy_nfs | lower }}
-nfs_server: "{{ nfs_server.nfs_hostname }}.{{ networking.dns_domain_name }}"
-vm_net_interface: "{{ vmware_environment.vm_net_interface }}"
-vm_net_type: "{{ vmware_environment.vm_net_type }}"
+nfs_server: "{{ nfs_server.nfs_hostname }}.{{ nfs_server.nfs_dns_domain }}"
+vm_net_interface: "{{ vcenter_environment.vm_net_interface }}"
+vm_net_type: "{{ vcenter_environment.vm_net_type }}"
 vm_net_mask: "{{ networking.subnet_mask }}"
 vm_net_gw: "{{ networking.default_gateway }}"
-vm_disk_type: "{{ vmware_environment.vm_disk_type }}"
-vm_state: "{{ vmware_environment.vm_state }}"
+vm_disk_type: "{{ vcenter_environment.vm_disk_type }}"
 vm_template: "{{ vm_template.template_name }}"

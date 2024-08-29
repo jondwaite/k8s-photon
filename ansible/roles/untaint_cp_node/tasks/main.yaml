@@ -1,6 +1,14 @@
+# Attempting to 'untaint' a node which has already been untainted causes an error so check first:
+- name: Check current taints
+  ansible.builtin.shell: >
+    set -o pipefail && kubectl describe nodes {{ inventory_hostname }} | grep Taints | awk '{ print $2 }'
+  register: node_taints
+  changed_when: node_taints.rc != 0
+
+# Then only attempt to untaint if there are current taints:
 - name: Untaint control-plane nodes from scheduling pods
   ansible.builtin.shell: >
     kubectl taint node {{ inventory_hostname }} node-role.kubernetes.io/control-plane-
-  ignore_errors: true
   register: untaint_cp_nodes
   changed_when: untaint_cp_nodes.rc != 0
+  when: node_taints.stdout != '<none>'

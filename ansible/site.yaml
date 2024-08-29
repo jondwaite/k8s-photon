@@ -24,6 +24,7 @@
   gather_facts: false
   roles:
     - role: deploy_vm
+      when: deploy_nfs
     - role: config_nfs_server
       when: deploy_nfs
 

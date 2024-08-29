@@ -1,4 +1,5 @@
 {
+    "target_hv": "vcenter",
     "kubernetes_cluster": {
         "cluster_hostname": "k8s-cl01",
         "cluster_ip": "172.30.16.10",
@@ -32,6 +33,7 @@
     "nfs_server": {
         "deploy_nfs": true,
         "nfs_hostname": "k8s-cl01-nfs",
+        "nfs_dns_domain": "lab.internal",
         "nfs_mount_path": "/mnt/data",
         "nfs_ip": "172.30.16.5",
         "nfs_vram_gb": 4,
@@ -39,7 +41,7 @@
         "nfs_boot_disk_gb": 8,
         "nfs_data_disk_gb": 50
     },
-    "vmware_environment": {
+    "vcenter_environment": {
         "vcenter_host": "<vcenter hostname or IP>",
         "vcenter_username": "<vcenter username>",
         "vcenter_password": "<vcenter password>",
@@ -52,6 +54,7 @@
         "vm_net_interface": "eth0",
         "vm_net_type": "vmxnet3",
         "vm_disk_type": "thin",
+        "nestedhv": true,
         "photon_os_media": {
             "iso_datastore": "iso",
             "iso_path": "linux/photon",
