@@ -174,7 +174,7 @@ variable "dl_kubectl" {
 	description = "Download link for kubectl binary"
 }
 
-variable "dl_kubectl-convert" {
+variable "dl_kubectl_convert" {
 	type = string
 	description = "Download link for kubectl-convert binary"
 }
@@ -184,17 +184,17 @@ variable "dl_crictl" {
 	description = "Download link for crictl binary"
 }
 
-variable "dl_kubeadm-kubelet" {
+variable "dl_kubeadm_kubelet" {
 	type = string
 	description = "Download link for kubeadm and kubelet binaries"
 }
 
-variable "dl_kubelet-service" {
+variable "dl_kubelet_service" {
 	type = string
 	description = "Download link for service file for kubelet"
 }
 
-variable "dl_kubeadm-config" {
+variable "dl_kubeadm_config" {
 	type = string
 	description = "Download link for kubeadm conf file"
 }

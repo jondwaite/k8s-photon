@@ -90,11 +90,11 @@ build {
       "DL_NERDCTL=${var.dl_nerdctl}",
       "DL_CALICOCTL=${var.dl_calicoctl}",
       "DL_KUBECTL=${var.dl_kubectl}",
-      "DL_KUBECTL_CONVERT=${var.dl_kubectl-convert}",
+      "DL_KUBECTL_CONVERT=${var.dl_kubectl_convert}",
       "DL_CRICTL=${var.dl_crictl}",
-      "DL_KUBEADM_KUBELET=${var.dl_kubeadm-kubelet}",
-      "DL_KUBELET_SERVICE=${var.dl_kubelet-service}",
-      "DL_KUBEADM_CONFIG=${var.dl_kubeadm-config}",
+      "DL_KUBEADM_KUBELET=${var.dl_kubeadm_kubelet}",
+      "DL_KUBELET_SERVICE=${var.dl_kubelet_service}",
+      "DL_KUBEADM_CONFIG=${var.dl_kubeadm_config}",
       "SSH_KEY=${var.ssh_key}",
       "TRUSTED_CA_ROOT=${var.trusted_CA_root}"
     ]

@@ -77,5 +77,25 @@
         "trusted_root_ca": {
             "ca_cert": "PEM public certificate for root CA to be trusted by nodes - must be on one line with \n as linebreaks due to json format"
         }
+    },
+    "download_links": {
+        "dl_containerd": "https://github.com/containerd/containerd/releases/download/v1.7.20/containerd-1.7.20-linux-amd64.tar.gz",
+        "dl_containerd_service": "https://raw.githubusercontent.com/containerd/containerd/main/containerd.service",
+        "dl_runc": "https://github.com/opencontainers/runc/releases/download/v1.1.13/runc.amd64",
+        "dl_cni_plugins": "https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-amd64-v1.5.1.tgz",
+        "dl_nerdctl": "https://github.com/containerd/nerdctl/releases/download/v1.7.6/nerdctl-1.7.6-linux-amd64.tar.gz",
+        "dl_calicoctl": "https://github.com/projectcalico/calico/releases/download/v3.28.1/calicoctl-linux-amd64",
+        "dl_kubectl": "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl",
+        "dl_kubectl_convert": "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/kubectl-convert",
+        "dl_crictl": "https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.31.1/crictl-v1.31.1-linux-amd64.tar.gz",
+        "dl_kubeadm_kubelet": "https://dl.k8s.io/release/v1.31.0/bin/linux/amd64/{kubeadm,kubelet}",
+        "dl_kubelet_service": "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubelet/kubelet.service",
+        "dl_kubeadm_config": "https://raw.githubusercontent.com/kubernetes/release/master/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf",
+        "csi_driver_nfs_dl": "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts",
+        "kube_vip_dl": "https://api.github.com/repos/kube-vip/kube-vip/releases/latest",
+        "kube_vip_cc_dl": "https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml",
+        "calico_yaml_dl": "https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml",
+        "portainer_helm": "https://portainer.github.io/k8s",
+        "traefik_helm":   "https://traefik.github.io/charts"
     }
 }

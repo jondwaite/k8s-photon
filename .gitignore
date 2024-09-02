@@ -7,4 +7,4 @@ inventory.yaml
 /.vscode
 /ansible/temp/
 /ansible/cp/root*
-config.json
+config*.json
