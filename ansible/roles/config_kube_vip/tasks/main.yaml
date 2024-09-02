@@ -1,7 +1,7 @@
 - name: Apply kube-vip cloud controller yaml
   kubernetes.core.k8s:
     state: present
-    src: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+    src: "{{ kube_vip_cc_dl }}"
 
 - name: Create kube-vip configmap
   kubernetes.core.k8s:

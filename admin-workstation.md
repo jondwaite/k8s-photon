@@ -6,7 +6,7 @@ Configure an administration VM for k8s-photon project - these steps are based on
 
 - Build VM from Photon OS 5.0 ISO (photon-minimal-5.0-dde71ec57.x86_64.iso) - this ISO image will also be used by the VM build so note the datastore and path
 - Assign (or use DHCP) IP address able to reach the internet and the network where the cluster will be deployed/built
-- Create DNS host entries ready for the cluster/hosts defined in the configuration (optional - each deployed cluster node automatically gets a `hosts` file with all relevant IP addresses and hosts in it)
+- Create DNS host entries ready for the cluster/hosts defined in the configuration (if not using host files where each deployed cluster node gets a `hosts` file with all relevant IP addresses and hostnames in it)
 - Ensure DHCP is available/functional on the build network (the initial template build VM needs this)
 - Default installation of Photon OS 5 works fine, 8 GB of disk space is plenty and 1 vCPU / 4GB of RAM is fine. Total used disk space in testing for the admin VM is approx. 1.6 GB.
 

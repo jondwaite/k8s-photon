@@ -3,58 +3,53 @@
     path: /etc/kubernetes/admin.conf
   register: k8sadminconf
 
-- name: Display message if admin.conf already exists
-  ansible.builtin.debug:
-    msg: Kubernetes admmin.conf detected, not attempting to re-join this node to cluster
-  when: k8sadminconf.stat.exists
-
-- name: Generate new certificate key on first cluster node
-  ansible.builtin.command:
-    cmd: kubeadm init phase upload-certs --upload-certs
-  register: cert_key
-  delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
-  changed_when: cert_key.rc != 0
+- name: Join additional control-plane node to cluster
   when: not k8sadminconf.stat.exists
+  block:
+    - name: Generate new certificate key on first cluster node
+      ansible.builtin.command:
+        cmd: kubeadm init phase upload-certs --upload-certs
+      register: cert_key
+      delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
+      changed_when: cert_key.rc != 0
 
-- name: Get join command from first cluster node
-  ansible.builtin.command:
-    cmd: kubeadm token create --print-join-command
-  register: join_cmd
-  delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
-  changed_when: join_cmd.rc != 0
-  when: not k8sadminconf.stat.exists
+    - name: Get join command from first cluster node
+      ansible.builtin.command:
+        cmd: kubeadm token create --print-join-command
+      register: join_cmd
+      delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
+      changed_when: join_cmd.rc != 0
 
-- name: Join node to kubernetes cluster
-  ansible.builtin.shell: >
-    {{ join_cmd.stdout }}
-    --control-plane
-    --certificate-key {{ cert_key.stdout_lines[-1] }}
-    --ignore-preflight-errors=numCPU
-  register: join_cluster
-  changed_when: join_cluster.rc != 0
-  when: not k8sadminconf.stat.exists
+    - name: Join node to kubernetes cluster
+      ansible.builtin.shell: >
+        {{ join_cmd.stdout }}
+        --control-plane
+        --certificate-key {{ cert_key.stdout_lines[-1] }}
+        --ignore-preflight-errors=numCPU
+      register: join_cluster
+      changed_when: join_cluster.rc != 0
 
-- name: Create .kube directory
-  ansible.builtin.file:
-    path: $HOME/.kube
-    state: directory
-    mode: '0700'
+    - name: Create .kube directory
+      ansible.builtin.file:
+        path: $HOME/.kube
+        state: directory
+        mode: '0700'
 
-- name: Copy kube.config file
-  ansible.builtin.copy:
-    remote_src: true
-    src: /etc/kubernetes/admin.conf
-    dest: $HOME/.kube/config
-    mode: '0600'
+    - name: Copy kube.config file
+      ansible.builtin.copy:
+        remote_src: true
+        src: /etc/kubernetes/admin.conf
+        dest: $HOME/.kube/config
+        mode: '0600'
 
-- name: Copy superadmin.conf to node
-  ansible.builtin.copy:
-    src: temp/super-admin.conf
-    dest: /etc/kubernetes/
-    mode: '0600'
+    - name: Copy superadmin.conf to node
+      ansible.builtin.copy:
+        src: temp/super-admin.conf
+        dest: /etc/kubernetes/
+        mode: '0600'
 
-- name: Copy kube-vip.conf to node
-  ansible.builtin.copy:
-    src: temp/kube-vip.yaml
-    dest: /etc/kubernetes/manifests/
-    mode: '0640'
+    - name: Copy kube-vip.conf to node
+      ansible.builtin.copy:
+        src: temp/kube-vip.yaml
+        dest: /etc/kubernetes/manifests/
+        mode: '0640'

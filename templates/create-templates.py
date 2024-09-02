@@ -21,6 +21,7 @@ templates = []
 templates.append({"tmpl":"inventory.yaml.tmpl", "output":"ansible/inventory.yaml"})
 templates.append({"tmpl":"cluster.yaml.tmpl", "output":"ansible/group_vars/all/cluster.yaml"})
 templates.append({"tmpl":"environment.yaml.tmpl", "output":"ansible/group_vars/all/environment.yaml"})
+templates.append({"tmpl":"downloads.yaml.tmpl", "output":"ansible/group_vars/all/downloads.yaml"})
 templates.append({"tmpl":"config.auto.pkrvars.hcl.tmpl", "output":"packer/config.auto.pkrvars.hcl"})
 
 print(f"Reading config file '{configfile}'...")

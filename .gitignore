@@ -1,5 +1,6 @@
 config.auto.pkrvars.hcl
 cluster.yaml
+downloads.yaml
 environment.yaml
 inventory.yaml
 /reference/

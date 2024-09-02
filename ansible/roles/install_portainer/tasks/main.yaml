@@ -1,7 +1,7 @@
 - name: Add portainer chart repo
   kubernetes.core.helm_repository:
     name: portainer
-    repo_url: "https://portainer.github.io/k8s"
+    repo_url: "{{ portainer_helm }}"
 
 - name: Create namespace
   kubernetes.core.k8s:

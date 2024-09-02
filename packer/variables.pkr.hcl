@@ -50,6 +50,12 @@ variable "vcenter_network" {
 	description = "The vCenter network the build VM will use (needs DHCP enabled)"
 }
 
+variable "NestedHV" {
+	type = bool
+	default = true
+	description = "Whether the deployed template VM supported nested virtualization"
+}
+
 variable "iso_datastore" {
 	type = string
 	default = "iso"

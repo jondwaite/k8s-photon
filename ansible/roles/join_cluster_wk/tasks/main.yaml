@@ -1,36 +1,32 @@
-- name: Check if admin.conf already exists
+- name: Check if kubelet.conf already exists
   ansible.builtin.stat:
     path: /etc/kubernetes/kubelet.conf
   register: kubeletconf
 
-- name: Display message if admin.conf already exists
-  ansible.builtin.debug:
-    msg: Kubernetes admmin.conf detected, not attempting to re-join this node to cluster
-  when: kubeletconf.stat.exists
-
-- name: Get join command from first cluster node
-  ansible.builtin.command:
-    cmd: kubeadm token create --print-join-command
-  register: join_cmd
-  delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
-  changed_when: join_cmd.rc != 0
+- name: Join worker node to cluster
   when: not kubeletconf.stat.exists
+  block:
+    - name: Get join command from first cluster node
+      ansible.builtin.command:
+        cmd: kubeadm token create --print-join-command
+      register: join_cmd
+      delegate_to: "{{ groups['k8s_cp_first_node'][0] }}"
+      changed_when: join_cmd.rc != 0
 
-- name: Join node to kubernetes cluster
-  ansible.builtin.command:
-    cmd: "{{ join_cmd.stdout }} --ignore-preflight-errors=numCPU"
-  register: join_worker_cluster
-  changed_when: join_worker_cluster.rc != 0
-  when: not kubeletconf.stat.exists
+    - name: Join node to kubernetes cluster
+      ansible.builtin.command:
+        cmd: "{{ join_cmd.stdout }} --ignore-preflight-errors=numCPU"
+      register: join_worker_cluster
+      changed_when: join_worker_cluster.rc != 0
 
-- name: Create .kube directory
-  ansible.builtin.file:
-    path: $HOME/.kube
-    state: directory
-    mode: '0700'
+    - name: Create .kube directory
+      ansible.builtin.file:
+        path: $HOME/.kube
+        state: directory
+        mode: '0700'
 
-- name: Copy admin.conf to node
-  ansible.builtin.copy:
-    src: temp/admin.conf
-    dest: $HOME/.kube/config
-    mode: '0600'
+    - name: Copy admin.conf to node
+      ansible.builtin.copy:
+        src: temp/admin.conf
+        dest: $HOME/.kube/config
+        mode: '0600'

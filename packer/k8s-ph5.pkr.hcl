@@ -37,7 +37,7 @@ source "vsphere-iso" "k8s-ph5" {
   CPUs                    = var.num_cpus
   cpu_cores               = var.num_cpu_cores
   RAM                     = var.num_vram_mb
-  NestedHV                = var.nestedhv
+  NestedHV                = var.NestedHV
   network_adapters {
     network               = var.vcenter_network
     network_card          = "vmxnet3"
