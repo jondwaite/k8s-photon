@@ -18,3 +18,21 @@
       - value: service.type=LoadBalancer
       - value: tls.force=true
     wait: true
+
+- name: Get portainer URI
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: portainer
+    namespace: portainer
+  register: portainer_service
+
+- name: Set portainer admin password
+  ansible.builtin.uri:
+    url: https://{{ portainer_service.resources[0].spec.loadBalancerIP }}:9443/api/users/admin/init
+    validate_certs: false
+    method: POST
+    body_format: json
+    body:
+      username: admin
+      password: "{{ portainer_password }}"

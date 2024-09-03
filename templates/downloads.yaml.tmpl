@@ -1,7 +1,7 @@
 ---
-csi_driver_nfs_dl: "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
-kube_vip_dl: "https://api.github.com/repos/kube-vip/kube-vip/releases/latest"
-kube_vip_cc_dl: "https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml"
-calico_yaml_dl: "https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml"
-portainer_helm: "https://portainer.github.io/k8s"
-traefik_helm: "https://traefik.github.io/charts"
+csi_driver_nfs_dl: "{{ download_links.csi_driver_nfs_dl}}"
+kube_vip_dl: "{{ download_links.kube_vip_dl }}"
+kube_vip_cc_dl: "{{ download_links.kube_vip_cc_dl }}"
+calico_yaml_dl: "{{ download_links.calico_yaml_dl }}"
+portainer_helm: "{{ download_links.portainer_helm }}"
+traefik_helm: "{{ download_links.traefik_helm }}"
