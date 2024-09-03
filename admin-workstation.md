@@ -39,6 +39,9 @@ install -m 755 packer /usr/local/bin
 ### Install Red Hat ansible
 
 Install and configure [`ansible`](https://www.ansible.com/) using the following, pyvmomi is required for ansible to talk to vSphere:
+
+>NOTE: The `setuptools-65.5.0.dist-info` directory is an empty folder left behind by `tdnf update` which causes pip to report errors, it can be removed as shown below or just ignore the `pip` reported errors.
+
 ```
 rm -rf /usr/lib/python3.11/site-packages/setuptools-65.5.0.dist-info
 pip install --upgrade pip --root-user-action=ignore

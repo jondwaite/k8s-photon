@@ -18,6 +18,8 @@ The file sections are:
 
 Most of the options should be reasonably self-explanatory, some notes below in an attempt to avoid issues:
 
+>**NOTE**: If installing portainer and specifying a password in `portainer_password` note that this must be at least 12 characters in length to satisfy portainer requirements. Otherwise the admin account password must be set within 5 minutes of deployment using the web interface. If more than 5 minutes have elapsed the portainer instance needs to be restarted before this can be done by: `kubectl rollour restart deployment portainer -n portainer`
+
 - The admin workstation used to deploy the cluster needs `packer` and `ansible` installed on it together with some other dependencies - see the [admin-workstation](admin-workstation.md) file for details of building a suitable host/VM (based on Photon OS) to do this and details of which additional components are required. It should be possible to configure a Windows host to act as an admin workstation, but I have not attempted this.
 
 - The numbers of cluster control-plane and worker nodes are completely configurable (simply add/remove lines in the `config.json` file) - you can build clusters with 1 control-plane node and 20 worker nodes or any other (valid) combination. The only restrictions are that there must be at least 1 control-plane node (to bootstrap the cluster) and one worker node (unless you 'untaint' the control-plane nodes - see below). The `config.json` file needs to be a valid `JSON` document so pay attention to commas etc. on line endings.
