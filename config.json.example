@@ -13,6 +13,7 @@
             "k8s-cl01-c03": "172.30.16.13"
         },
         "install_portainer": true,
+        "portainer_password": "<mysecurepassword>",
         "install_traefik": true,
         "control_plane_node_spec": {
             "vram_gb": 4,
