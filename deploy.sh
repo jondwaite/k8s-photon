@@ -12,11 +12,9 @@ echo "Creating configuration files from templates..."
 ./templates/create-templates.py $configfile
 
 echo "Building template VM..."
-cd packer
-packer init .
-packer build .
+cd packer && packer init . && packer build . && cd ..
 
 echo "Deploying Cluster..."
-cd ../ansible
-ansible-playbook site.yaml
+cd ansible && ansible-playbook site.yaml && cd ..
+
 exit
