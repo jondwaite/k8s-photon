@@ -16,3 +16,5 @@ vm_net_mask: "{{ networking.subnet_mask }}"
 vm_net_gw: "{{ networking.default_gateway }}"
 vm_disk_type: "{{ vcenter_environment.vm_disk_type }}"
 vm_template: "{{ vm_template.template_name }}"
+copy_kube_config: {{ client.copy_kube_config | lower }}
+kube_config_file: "{{ client.kube_config_file }}"

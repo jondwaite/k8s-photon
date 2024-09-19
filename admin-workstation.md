@@ -140,46 +140,56 @@ After this you should be able to see the newly deployed cluster nodes and pods:
 
 ```
 kubectl get nodes -o wide
-NAME           STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                 KERNEL-VERSION      CONTAINER-RUNTIME
-k8s-cl01-c01   Ready    control-plane   8m39s   v1.31.0   172.30.16.11   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
-k8s-cl01-c02   Ready    control-plane   6m56s   v1.31.0   172.30.16.12   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
-k8s-cl01-c03   Ready    control-plane   6m4s    v1.31.0   172.30.16.13   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
-k8s-cl01-w01   Ready    <none>          4m14s   v1.31.0   172.30.16.14   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
-k8s-cl01-w02   Ready    <none>          4m14s   v1.31.0   172.30.16.15   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
-k8s-cl01-w03   Ready    <none>          4m14s   v1.31.0   172.30.16.16   <none>        VMware Photon OS/Linux   6.1.102-1.ph5-esx   containerd://1.7.20
+NAME          STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                 KERNEL-VERSION      CONTAINER-RUNTIME
+k8s-dev-c01   Ready    control-plane   5m6s    v1.31.0   172.30.32.11   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
+k8s-dev-c02   Ready    control-plane   4m16s   v1.31.0   172.30.32.12   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
+k8s-dev-c03   Ready    control-plane   4m3s    v1.31.0   172.30.32.13   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
+k8s-dev-w01   Ready    <none>          3m53s   v1.31.0   172.30.32.14   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
+k8s-dev-w02   Ready    <none>          3m53s   v1.31.0   172.30.32.15   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
+k8s-dev-w03   Ready    <none>          3m53s   v1.31.0   172.30.32.16   <none>        VMware Photon OS/Linux   6.1.109-1.ph5-esx   containerd://1.7.20
 
 kubectl get pods -A
-NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
-kube-system   calico-kube-controllers-68865dfcb6-ct5lr   1/1     Running   0          8m10s
-kube-system   calico-node-bmbpq                          1/1     Running   0          4m30s
-kube-system   calico-node-c4whx                          1/1     Running   0          4m30s
-kube-system   calico-node-cz6kj                          1/1     Running   0          8m10s
-kube-system   calico-node-f5crs                          1/1     Running   0          7m12s
-kube-system   calico-node-qwqgq                          1/1     Running   0          4m30s
-kube-system   calico-node-wpsjm                          1/1     Running   0          6m20s
-kube-system   coredns-6f6b679f8f-5z7rd                   1/1     Running   0          8m45s
-kube-system   coredns-6f6b679f8f-z744t                   1/1     Running   0          8m45s
-kube-system   etcd-k8s-cl01-c01                          1/1     Running   0          8m52s
-kube-system   etcd-k8s-cl01-c02                          1/1     Running   0          7m12s
-kube-system   etcd-k8s-cl01-c03                          1/1     Running   0          6m19s
-kube-system   kube-apiserver-k8s-cl01-c01                1/1     Running   0          8m52s
-kube-system   kube-apiserver-k8s-cl01-c02                1/1     Running   0          7m10s
-kube-system   kube-apiserver-k8s-cl01-c03                1/1     Running   0          6m18s
-kube-system   kube-controller-manager-k8s-cl01-c01       1/1     Running   0          8m53s
-kube-system   kube-controller-manager-k8s-cl01-c02       1/1     Running   0          7m10s
-kube-system   kube-controller-manager-k8s-cl01-c03       1/1     Running   0          6m18s
-kube-system   kube-proxy-dk4rq                           1/1     Running   0          4m30s
-kube-system   kube-proxy-g44bm                           1/1     Running   0          4m30s
-kube-system   kube-proxy-hqqjj                           1/1     Running   0          4m30s
-kube-system   kube-proxy-jqn2w                           1/1     Running   0          7m12s
-kube-system   kube-proxy-mnkw8                           1/1     Running   0          8m45s
-kube-system   kube-proxy-x8hfj                           1/1     Running   0          6m20s
-kube-system   kube-scheduler-k8s-cl01-c01                1/1     Running   0          8m52s
-kube-system   kube-scheduler-k8s-cl01-c02                1/1     Running   0          7m10s
-kube-system   kube-scheduler-k8s-cl01-c03                1/1     Running   0          6m18s
-kube-system   kube-vip-k8s-cl01-c01                      1/1     Running   0          8m54s
-kube-system   kube-vip-k8s-cl01-c02                      1/1     Running   0          6m44s
-kube-system   kube-vip-k8s-cl01-c03                      1/1     Running   0          5m52s
+NAMESPACE     NAME                                       READY   STATUS    RESTARTS        AGE
+kube-system   calico-kube-controllers-68865dfcb6-zmz8w   1/1     Running   0               5m3s
+kube-system   calico-node-5xvmw                          1/1     Running   0               4m22s
+kube-system   calico-node-8pxmq                          1/1     Running   0               5m3s
+kube-system   calico-node-8tjrf                          1/1     Running   0               3m59s
+kube-system   calico-node-cgrdj                          1/1     Running   0               3m59s
+kube-system   calico-node-frlrw                          1/1     Running   0               3m59s
+kube-system   calico-node-nxlnm                          1/1     Running   0               4m9s
+kube-system   coredns-6f6b679f8f-dzntd                   1/1     Running   0               5m4s
+kube-system   coredns-6f6b679f8f-mrrw2                   1/1     Running   0               5m4s
+kube-system   csi-nfs-controller-64fc56cd5d-npsz2        4/4     Running   1 (2m50s ago)   3m29s
+kube-system   csi-nfs-node-5mv8g                         3/3     Running   0               3m29s
+kube-system   csi-nfs-node-gz6f2                         3/3     Running   0               3m29s
+kube-system   csi-nfs-node-l4nw9                         3/3     Running   0               3m29s
+kube-system   csi-nfs-node-pbjqd                         3/3     Running   1 (2m41s ago)   3m29s
+kube-system   csi-nfs-node-r8wbp                         3/3     Running   0               3m29s
+kube-system   csi-nfs-node-zknhz                         3/3     Running   0               3m29s
+kube-system   etcd-k8s-dev-c01                           1/1     Running   0               5m10s
+kube-system   etcd-k8s-dev-c02                           1/1     Running   0               4m22s
+kube-system   etcd-k8s-dev-c03                           1/1     Running   0               4m7s
+kube-system   kube-apiserver-k8s-dev-c01                 1/1     Running   0               5m10s
+kube-system   kube-apiserver-k8s-dev-c02                 1/1     Running   0               4m20s
+kube-system   kube-apiserver-k8s-dev-c03                 1/1     Running   0               4m7s
+kube-system   kube-controller-manager-k8s-dev-c01        1/1     Running   1 (2m34s ago)   5m10s
+kube-system   kube-controller-manager-k8s-dev-c02        1/1     Running   0               4m20s
+kube-system   kube-controller-manager-k8s-dev-c03        1/1     Running   1 (58s ago)     4m7s
+kube-system   kube-proxy-4l2kj                           1/1     Running   0               4m22s
+kube-system   kube-proxy-9ks6t                           1/1     Running   0               3m59s
+kube-system   kube-proxy-g6rnb                           1/1     Running   0               4m9s
+kube-system   kube-proxy-pg858                           1/1     Running   0               3m59s
+kube-system   kube-proxy-z8sft                           1/1     Running   0               3m59s
+kube-system   kube-proxy-zwwvr                           1/1     Running   0               5m4s
+kube-system   kube-scheduler-k8s-dev-c01                 1/1     Running   0               5m10s
+kube-system   kube-scheduler-k8s-dev-c02                 1/1     Running   0               4m20s
+kube-system   kube-scheduler-k8s-dev-c03                 1/1     Running   0               4m7s
+kube-system   kube-vip-cloud-provider-f844d5795-xtz9x    1/1     Running   0               3m53s
+kube-system   kube-vip-k8s-dev-c01                       1/1     Running   0               5m10s
+kube-system   kube-vip-k8s-dev-c02                       1/1     Running   0               4m16s
+kube-system   kube-vip-k8s-dev-c03                       1/1     Running   0               4m3s
+portainer     portainer-644d879d77-vkh44                 1/1     Running   0               2m34s
+traefik       traefik-6594599c7b-q2jxn                   1/1     Running   0               58s
 ```
 
 Congratulations! - your cluster is now initialised and up and running ready to deploy whatever applications you need.

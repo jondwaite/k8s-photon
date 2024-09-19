@@ -14,11 +14,12 @@ The file sections are:
 |vcenter_environment|Defines the target vCenter cluster environment for the deployment. Parameters here are used both by packer for the initial template VM build and by ansible for the cluster bring-up|
 |networking|This section details the environment networking - if you chose to use DNS the DNS domain and servers provided here should resolve entries for the VMs to be deployed from the `kubernetes_cluster` and `nfs_server` sections and should also provide name resolution for the `cluster_hostname`|
 |vm_template|This section provides configuration details for the template VM built by packer, including the password to be assigned to the `root` user account|
+|client|This section controls whether the admin.conf file should be copied from the cluster to the admin workstation and what file/path it should be stored in (e.g. ~/.kube/config to be automatically used by `kubectl` on the admin client)|
 |download_links|This section provides the URLs used to download each installed component in the template VM (by packer) and on the kubernetes cluster itself (by ansible)|
 
 Most of the options should be reasonably self-explanatory, some notes below in an attempt to avoid issues:
 
->**NOTE**: If installing portainer and specifying a password in `portainer_password` note that this must be at least 12 characters in length to satisfy portainer requirements. Otherwise the admin account password must be set within 5 minutes of deployment using the web interface. If more than 5 minutes have elapsed the portainer instance needs to be restarted before this can be done by: `kubectl rollour restart deployment portainer -n portainer`
+>**NOTE**: If installing portainer and specifying a password in `portainer_password` this **must** be at least 12 characters in length to satisfy portainer requirements. If this option is not used the admin account password must be set within 5 minutes of deployment using the web interface. If more than 5 minutes have elapsed the portainer instance needs to be restarted before this can be done by: `kubectl rollour restart deployment portainer -n portainer`
 
 - The admin workstation used to deploy the cluster needs `packer` and `ansible` installed on it together with some other dependencies - see the [admin-workstation](admin-workstation.md) file for details of building a suitable host/VM (based on Photon OS) to do this and details of which additional components are required. It should be possible to configure a Windows host to act as an admin workstation, but I have not attempted this.
 

@@ -15,3 +15,19 @@
     chart_ref: traefik/traefik
     namespace: traefik
     wait: true
+
+- name: Get traefik URI
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: traefik
+    namespace: traefik
+  register: traefik_service
+
+- name: Save the URI in a host fact
+  ansible.builtin.set_fact:
+    traefik_uri: "https://{{ traefik_service.resources[0].spec.loadBalancerIP }}"
+
+- name: Display traefik message
+  ansible.builtin.debug:
+    msg: "Traefik URI is: https://{{ traefik_service.resources[0].spec.loadBalancerIP }}"

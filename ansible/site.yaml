@@ -67,12 +67,6 @@
   roles:
     - config_kube_vip
 
-# Remove the temp folder created in ansible directory since it holds keys
-- name: Cleanup temp
-  hosts: localhost
-  roles:
-    - cleanup_temp
-
 # Install helm on all nodes for later use
 - name: Install helm
   hosts: k8s_nodes
@@ -90,3 +84,9 @@
       when: install_portainer
     - role: install_traefik
       when: install_traefik
+
+# Post-deployment tasks
+- name: Post-deployment tasks
+  hosts: localhost
+  roles:
+    - post_deploy

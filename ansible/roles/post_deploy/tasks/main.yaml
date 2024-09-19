@@ -1,0 +1,48 @@
+- name: Create .kube folder if doesn't exist
+  ansible.builtin.file:
+    path: ~/.kube
+    state: directory
+    mode: '0755'
+
+- name: Copy kubectl config file
+  ansible.builtin.copy:
+    src: temp/admin.conf
+    dest: "~/.kube/{{ kube_config_file }}"
+    mode: '0644'
+  when: copy_kube_config
+
+# If not using DNS, create hosts file entries for cluster nodes and cluster itself
+# Use `cat ansible/hosts-entries | sudo tee -a /etc/hosts` or similar on admin node to add these (since we don't have write permission without sudo)
+- name: Update admin workstation hosts file
+  with_items: "{{ groups['k8s_all_nodes'] }}"
+  ansible.builtin.lineinfile:
+    dest: hosts-entries
+    line: "{{ hostvars[item].ansible_host }}  {{ hostvars[item].inventory_hostname }} {{ hostvars[item].inventory_hostname }}.{{ dns_domain_name }}"
+    state: present
+    mode: '0644'
+    create: true
+  when: use_hosts_file
+
+- name: Clean up temp directory from ansible
+  ansible.builtin.file:
+    path: temp
+    state: absent
+
+- name: Display completion message
+  ansible.builtin.debug:
+    msg:
+      - 'Cluster deployment has completed, check logs for any issues'
+
+- name: Output Portainer URI
+  ansible.builtin.debug:
+    msg: "Portainer URI: {{ hostvars[groups['k8s_cp_first_node'][0]]['portainer_uri'] }}"
+  when: install_portainer
+
+- name: Output Traefik URI
+  ansible.builtin.debug:
+    msg: "Traefik URI: {{ hostvars[groups['k8s_cp_first_node'][0]]['traefik_uri'] }}"
+  when: install_traefik
+
+- name: Output Hosts details
+  ansible.builtin.debug:
+    msg: "To add 'hosts' entries to your workstation use: 'cat ansible/hosts-entries | sudo tee -a /etc/hosts' so your admin machine can access the cluster"
