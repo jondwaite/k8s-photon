@@ -7,7 +7,9 @@ kube_vip_ingress_cidr: "{{ kubernetes_cluster.kube_vip_ingress_cidr }}"
 schedule_pods_on_control_plane_nodes: {{ kubernetes_cluster.schedule_pods_on_control_plane_nodes | lower }}
 install_portainer: {{ kubernetes_cluster.install_portainer | lower }}
 portainer_password: "{{ kubernetes_cluster.portainer_password }}"
+portainer_hostname: "{{ kubernetes_cluster.portainer_hostname }}"
 install_traefik: {{ kubernetes_cluster.install_traefik | lower }}
+traefik_hostname: "{{ kubernetes_cluster.traefik_hostname }}"
 deploy_nfs: {{ nfs_server.deploy_nfs | lower }}
 nfs_server: "{{ nfs_server.nfs_hostname }}.{{ nfs_server.nfs_dns_domain }}"
 vm_net_interface: "{{ vcenter_environment.vm_net_interface }}"

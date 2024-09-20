@@ -8,8 +8,10 @@
         "kube_vip_ingress_cidr": "172.30.33.0/24",
         "schedule_pods_on_control_plane_nodes": true,
         "install_portainer": true,
+        "portainer_hostname": "portainer",
         "portainer_password": "<mysecurepassword>",
         "install_traefik": true,
+        "traefik_hostname": "traefik",
         "control_plane_node_hosts": {
             "k8s-dev-c01": "172.30.32.11",
             "k8s-dev-c02": "172.30.32.12",

@@ -26,8 +26,4 @@
 
 - name: Save the URI in a host fact
   ansible.builtin.set_fact:
-    traefik_uri: "https://{{ traefik_service.resources[0].spec.loadBalancerIP }}"
-
-- name: Display traefik message
-  ansible.builtin.debug:
-    msg: "Traefik URI is: https://{{ traefik_service.resources[0].spec.loadBalancerIP }}"
+    traefik_ip: "{{ traefik_service.resources[0].spec.loadBalancerIP }}"

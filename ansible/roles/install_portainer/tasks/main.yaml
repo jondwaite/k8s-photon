@@ -29,25 +29,21 @@
 
 - name: Save the URI in a host fact
   ansible.builtin.set_fact:
-    portainer_uri: "https://{{ portainer_service.resources[0].spec.loadBalancerIP }}:9443"
-
-- name: Display portainer message
-  ansible.builtin.debug:
-    msg: "Portainer URI is https://{{ portainer_service.resources[0].spec.loadBalancerIP }}:9443"
+    portainer_ip: "{{ portainer_service.resources[0].spec.loadBalancerIP }}"
 
 # Test if portainer admin password already set - will return HTTP 404 if not already set:
 - name: Test portainer admin password status
   ansible.builtin.uri:
-    url: "https://{{ portainer_service.resources[0].spec.loadBalancerIP }}:9443/api/users/admin/check"
+    url: "https://{{ portainer_ip }}:9443/api/users/admin/check"
     validate_certs: false
     return_content: false
-    status_code: [202, 404]
+    status_code: [202, 204, 404]
   register: portainer_admin_result
 
 # Only attempt to set password if HTTP 404 returned from previous step (prevents errors on multiple runs):
 - name: Set portainer admin password
   ansible.builtin.uri:
-    url: https://{{ portainer_service.resources[0].spec.loadBalancerIP }}:9443/api/users/admin/init
+    url: "https://{{ portainer_ip }}:9443/api/users/admin/init"
     validate_certs: false
     method: POST
     body_format: json

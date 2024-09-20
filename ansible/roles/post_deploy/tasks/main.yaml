@@ -23,6 +23,22 @@
     create: true
   when: use_hosts_file
 
+- name: Add portainer to hosts file
+  ansible.builtin.lineinfile:
+    dest: hosts-entries
+    line: "{{ hostvars[groups['k8s_cp_first_node'][0]]['portainer_ip'] }}   {{ portainer_hostname }} {{ portainer_hostname }}.{{ dns_domain_name }}"
+    state: present
+    mode: '0644'
+  when: install_portainer
+
+- name: Add traefik to hosts file
+  ansible.builtin.lineinfile:
+    dest: hosts-entries
+    line: "{{ hostvars[groups['k8s_cp_first_node'][0]]['traefik_ip'] }}   {{ traefik_hostname }} {{ traefik_hostname }}.{{ dns_domain_name }}"
+    state: present
+    mode: '0644'
+  when: install_traefik
+
 - name: Clean up temp directory from ansible
   ansible.builtin.file:
     path: temp
@@ -35,12 +51,16 @@
 
 - name: Output Portainer URI
   ansible.builtin.debug:
-    msg: "Portainer URI: {{ hostvars[groups['k8s_cp_first_node'][0]]['portainer_uri'] }}"
+    msg: |
+      - "Portainer URI: https://{{ portainer_hostname }}.{{ dns_domain_name }}:9443"
+      - "If using DNS this should resolve to {{ hostvars[groups['k8s_cp_first_node'][0]]['portainer_ip'] }}"
   when: install_portainer
 
 - name: Output Traefik URI
   ansible.builtin.debug:
-    msg: "Traefik URI: {{ hostvars[groups['k8s_cp_first_node'][0]]['traefik_uri'] }}"
+    msg: |
+      - "Traefik URI: https://{{ traefik_hostname }}.{{ dns_domain_name }}"
+      - "If using DNS this should resolve to {{ hostvars[groups['k8s_cp_first_node'][0]]['traefik_ip'] }}"
   when: install_traefik
 
 - name: Output Hosts details
