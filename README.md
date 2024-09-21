@@ -59,4 +59,4 @@ If you've used the `hosts` file option when deploying the cluster, you'll also n
 
 The versions of components used are (at the time of writing) the most recent release versions of the components and will be ahead (considerably in some cases) of the versions obtainable from the Photon OS repositories available through `tdnf` - this is intentional as one of the goals of this project was to be able to expirement with the 'latest and greatest' features and capabilities.
 
-> **NOTE** This repository is intended to be accompanied by a blog post which will be linked here once available
+> **NOTE** [this](https://kiwicloud.ninja/2024/09/automated-kubernetes-with-packer-and-ansible/) blog post contains more details on this repository
